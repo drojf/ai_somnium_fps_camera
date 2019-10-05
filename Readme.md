@@ -1,3 +1,16 @@
+## Developer's Instructions
+
+- Download DnSpy and extractt it somewhere
+- Navigate to the `AI The Somnium Files\AI_TheSomniumFiles_Data\Managed folder`
+- Open the `Assembly-CSharp.dll` with dnspy, **while it's in the same folder as all the other DLLs**. If it's not in the same folder as the other DLLS, dnspy won't be able to find them.
+- Navigate to the `InputProc` class
+- Replace the `Update()` function of the `InputProc` class with the below (In Unity, `Update()` is called once every game tick)
+
+## User's instructions
+
+- Download the modded `Assembly-CSharp.dll`, and replace your game DLL ( in `AI The Somnium Files\AI_TheSomniumFiles_Data\Managed folder`). Remember to keep a backup of your original `.dll`
+- Use the y, h, g, j, t, u keys to move along the axis. Use the shift key to move faster
+
 So far I have added a x/y/z movement keys, with shift to increase speed.
 
 ```csharp
