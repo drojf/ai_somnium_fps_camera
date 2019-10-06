@@ -3,7 +3,7 @@
 
 - Go to the [Releases Page](https://github.com/drojf/ai_somnium_freecam/releases)
 - Download the latest modded `Assembly-CSharp.dll`, and replace your game DLL (in `AI The Somnium Files\AI_TheSomniumFiles_Data\Managed folder`). Remember to keep a backup of your original `.dll`
-- Use the y, h, g, j, t, u keys to move the camera. Hold the left shift key to move faster. Use the mouse to rotate the camera. Currently, rotation is only supported in "free" mode (You can't rtoate the camera in "cinema" mode).
+- Use the arrow keys to move the camera. Hold the shift key to move faster. Use the mouse to rotate the camera
 
 So far I have added a x/y/z movement keys, with shift to increase speed.
 
@@ -31,33 +31,33 @@ private void LateUpdate()
         this.cumY += Input.GetAxis("Mouse Y") * mouseSensitivity * Time.deltaTime;
         camera.transform.eulerAngles = new Vector3(-this.cumY, this.cumX, 0f);
         Vector3 moveDir = default(Vector3);
-        float speed = Input.GetKey(KeyCode.LeftShift) ? 30f : 1f;
+        float speed = (Input.GetKey(KeyCode.RightShift) || Input.GetKey(KeyCode.LeftShift)) ? 20f : 2f;
         speed *= Time.deltaTime;
 
         //Move right and forward relative to the camera
-        if (Input.GetKey(KeyCode.Y))
+        if (Input.GetKey(KeyCode.UpArrow))
         {
             moveDir += speed * camera.transform.forward;
         }
-        if (Input.GetKey(KeyCode.H))
+        if (Input.GetKey(KeyCode.DownArrow))
         {
             moveDir -= speed * camera.transform.forward;
         }
-        if (Input.GetKey(KeyCode.J))
+        if (Input.GetKey(KeyCode.RightArrow))
         {
             moveDir += speed * camera.transform.right;
         }
-        if (Input.GetKey(KeyCode.G))
+        if (Input.GetKey(KeyCode.LeftArrow))
         {
             moveDir -= speed * camera.transform.right;
         }
 
         //Always move up/down the Z axis
-        if (Input.GetKey(KeyCode.T))
+        if (Input.GetKey(KeyCode.LeftBracket))
         {
             moveDir += speed * Vector3.up;
         }
-        if (Input.GetKey(KeyCode.U))
+        if (Input.GetKey(KeyCode.RightBracket))
         {
             moveDir -= speed * Vector3.up;
         }
