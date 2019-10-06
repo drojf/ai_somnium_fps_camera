@@ -1,6 +1,8 @@
 # AI: The Somnium Files FPS Camera Mod
 
-This mod adds a FPS style camera to all? parts of the game.
+This mod adds a FPS style camera to all? parts of the game, to inspect parts of the game you can't normally see.
+
+I don't recommend playing the game the first time around with this mod enabled, as various things may break unexpectedly.
 
 ## How to Install/Use
 
@@ -11,13 +13,17 @@ This mod adds a FPS style camera to all? parts of the game.
 
 ### Usage and Notes
 
-- Use the arrow keys to move the camera. Hold the shift key to move faster. Use the mouse to rotate the camera
+- Press **F8 to enable FPS mode**, and **F9 to revert to normal mode**. I've tried my best to "revert to normal mode" but this can break sometimes.
+- Use the arrow keys to translate the camera. Hold the shift key to move faster. Use the mouse to rotate the camera.
+- NOTE: make sure to exit FPS mode before accessing the menus, or you'll have various problems. If you do this accidentally, disable FPS mode, then return to the main menu to fix it.
 - Any changes to the camera you make apply to ALL cameras - this is why the character portraits move when you move.
 - Certain scenes look like they're in-game, but they are actually videos. Since it's a video, you cannot move the camera.
 
 ## Developer's Instructions / Reproduction Instructions
 
 These instructions are for developers ONLY!
+
+BIG NOTE: when you do "edit class" with dnspy, it may screw up the code depending on your settings. In this case, you should re-start with the original exe if you made changes, or just close/open the program again. Maybe some DnSpy experts can tell me what's happeneing or if I'm doing something wrong.
 
 - Download DnSpy and extractt it somewhere
 - Navigate to the `AI The Somnium Files\AI_TheSomniumFiles_Data\Managed folder`
@@ -26,59 +32,107 @@ These instructions are for developers ONLY!
 - Expand the `Game` arrow
 - Navigate to the `InputProc` class
 - Right click the class and click "add class members"
-  - Add two class variables - `float cumX = 0;` and `float cumY = 0;`
-  - Add a `private void LateUpdate()` function to the class (see unity documentation for when this function is called)
-- Replace the `LateUpdate()` function of the `InputProc` class with the below code (In Unity, `Update()` is called once every game tick)
+  - copy in the below code just below the `InputProc` class definition
 - Save the module. (You should enable "save extra metadata" or else the variable names will be lost in the saved DLLs?).
 
 ### Source Code for Update() function of InputProc class
 
 ```csharp
+struct CameraBackupState {
+    public Vector3 position;
+    public Vector3 eulerAngles;
+}
+
+float rotX;
+float rotY;
+bool fpsEnabled = false;
+Dictionary<Camera, CameraBackupState> backupCameraPositions;
+
 // Game.InputProc
 private void LateUpdate()
 {
-    float mouseSensitivity = 10f;
-    foreach (Camera camera in Camera.allCameras)
+    if(this.fpsEnabled)
     {
-        //Add FPS camera rotation
-        this.cumX += Input.GetAxis("Mouse X") * mouseSensitivity * Time.deltaTime;
-        this.cumY += Input.GetAxis("Mouse Y") * mouseSensitivity * Time.deltaTime;
-        this.cumY = Mathf.Clamp(this.cumY, -90f, 90f);
-        camera.transform.eulerAngles = new Vector3(-this.cumY, this.cumX, 0f);
+        float mouseSensitivity = 10f;
+        foreach (Camera camera in Camera.allCameras)
+        {
+            //Add FPS camera rotation
+            this.rotX += Input.GetAxis("Mouse X") * mouseSensitivity * Time.deltaTime;
+            this.rotY += Input.GetAxis("Mouse Y") * mouseSensitivity * Time.deltaTime;
+            this.rotY = Mathf.Clamp(this.rotY, -90f, 90f);
+            camera.transform.eulerAngles = new Vector3(-this.rotY, this.rotX, 0f);
 
-        //Add FPS camera movement
-        Vector3 moveDir = default(Vector3);
-        float speed = (Input.GetKey(KeyCode.RightShift) || Input.GetKey(KeyCode.LeftShift)) ? 20f : 2f;
-        speed *= Time.deltaTime;
+            //Add FPS camera movement
+            Vector3 moveDir = default(Vector3);
+            float speed = (Input.GetKey(KeyCode.RightShift) || Input.GetKey(KeyCode.LeftShift)) ? 20f : 2f;
+            speed *= Time.deltaTime;
 
-        //Move right and forward relative to the camera
-        if (Input.GetKey(KeyCode.UpArrow))
-        {
-            moveDir += speed * camera.transform.forward;
-        }
-        if (Input.GetKey(KeyCode.DownArrow))
-        {
-            moveDir -= speed * camera.transform.forward;
-        }
-        if (Input.GetKey(KeyCode.RightArrow))
-        {
-            moveDir += speed * camera.transform.right;
-        }
-        if (Input.GetKey(KeyCode.LeftArrow))
-        {
-            moveDir -= speed * camera.transform.right;
+            //Move right and forward relative to the camera
+            if (Input.GetKey(KeyCode.UpArrow))
+            {
+                moveDir += speed * camera.transform.forward;
+            }
+            if (Input.GetKey(KeyCode.DownArrow))
+            {
+                moveDir -= speed * camera.transform.forward;
+            }
+            if (Input.GetKey(KeyCode.RightArrow))
+            {
+                moveDir += speed * camera.transform.right;
+            }
+            if (Input.GetKey(KeyCode.LeftArrow))
+            {
+                moveDir -= speed * camera.transform.right;
+            }
+
+            //Always move up/down the Z axis
+            if (Input.GetKey(KeyCode.LeftBracket))
+            {
+                moveDir += speed * Vector3.up;
+            }
+            if (Input.GetKey(KeyCode.RightBracket))
+            {
+                moveDir -= speed * Vector3.up;
+            }
+
+            camera.transform.position += moveDir;
         }
 
-        //Always move up/down the Z axis
-        if (Input.GetKey(KeyCode.LeftBracket))
-        {
-            moveDir += speed * Vector3.up;
+        if(Input.GetKeyDown(KeyCode.F9)) {
+            this.fpsEnabled = false;
+            //attempt to restore each camera's transform. If you enter a menu or change scene without exiting, this might break.
+            foreach (Camera camera in Camera.allCameras)
+            {
+                if(backupCameraPositions.TryGetValue(camera, out CameraBackupState backupCameraState))
+                {
+                    camera.transform.position = backupCameraState.position;
+                    camera.transform.eulerAngles = backupCameraState.eulerAngles;
+                }
+            }
+            this.backupCameraPositions.Clear();
         }
-        if (Input.GetKey(KeyCode.RightBracket))
+    }
+    else {
+        if(Input.GetKeyDown(KeyCode.F8))
         {
-            moveDir -= speed * Vector3.up;
+            this.fpsEnabled = true;
+            this.rotX = 0;
+            this.rotY = 0;
+
+            if(backupCameraPositions == null)
+            {
+                backupCameraPositions = new Dictionary<Camera, CameraBackupState>();
+            }
+
+            //backup the current camera(s) position
+            foreach (Camera camera in Camera.allCameras)
+            {
+                backupCameraPositions[camera] = new CameraBackupState() {
+                    position = camera.transform.position,
+                    eulerAngles = camera.transform.eulerAngles,
+                };
+            }
         }
-        camera.transform.position = camera.transform.position + moveDir;
     }
 }
 ```
@@ -111,7 +165,6 @@ The current version of the game runs Unity 2017.4.17, 64-bit
 
 - https://www.unknowncheats.me/forum/unity/285864-beginners-guide-hacking-unity-games.html
 - DnSpy
-
 
 ### Unity Pages
 
