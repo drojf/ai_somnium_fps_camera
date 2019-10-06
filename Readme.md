@@ -21,13 +21,19 @@ So far I have added a x/y/z movement keys, with shift to increase speed.
 ### Source Code for Update() function of InputProc class
 
 ```csharp
-private void Update()
+// Game.InputProc
+private void LateUpdate()
 {
-    // Move all active cameras, since I don't know which is the currently active camera
+    float mouseSensitivity = 10f;
     foreach (Camera camera in Camera.allCameras)
     {
+        this.cumX += Input.GetAxis("Mouse X") * mouseSensitivity * Time.deltaTime;
+        this.cumY += Input.GetAxis("Mouse Y") * mouseSensitivity * Time.deltaTime;
+        camera.transform.eulerAngles = new Vector3(-this.cumY, this.cumX, 0f);
         Vector3 moveDir = default(Vector3);
-        float speed = Input.GetKey(KeyCode.LeftShift) ? 0.5f : 0.02f;
+        float speed = Input.GetKey(KeyCode.LeftShift) ? 30f : 1f;
+        speed *= Time.deltaTime;
+
         //Move right and forward relative to the camera
         if (Input.GetKey(KeyCode.Y))
         {
@@ -45,6 +51,7 @@ private void Update()
         {
             moveDir -= speed * camera.transform.right;
         }
+
         //Always move up/down the Z axis
         if (Input.GetKey(KeyCode.T))
         {
@@ -56,14 +63,6 @@ private void Update()
         }
         camera.transform.position = camera.transform.position + moveDir;
     }
-
-    // Existing game code - don't touch this!
-    this.proc();
-    if (this.onUpdate != null)
-    {
-        this.onUpdate.call();
-    }
-    // End Existing game code
 }
 ```
 
