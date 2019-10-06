@@ -1,13 +1,23 @@
+# AI: The Somnium Files FPS Camera Mod
 
-## User's instructions
+This mod adds a FPS style camera to all? parts of the game.
+
+## How to Install/Use
+
+### Installation
 
 - Go to the [Releases Page](https://github.com/drojf/ai_somnium_freecam/releases)
 - Download the latest modded `Assembly-CSharp.dll`, and replace your game DLL (in `AI The Somnium Files\AI_TheSomniumFiles_Data\Managed folder`). Remember to keep a backup of your original `.dll`
+
+### Usage and Notes
+
 - Use the arrow keys to move the camera. Hold the shift key to move faster. Use the mouse to rotate the camera
+- Any changes to the camera you make apply to ALL cameras - this is why the character portraits move when you move.
+- Certain scenes look like they're in-game, but they are actually videos. Since it's a video, you cannot move the camera.
 
-So far I have added a x/y/z movement keys, with shift to increase speed.
+## Developer's Instructions / Reproduction Instructions
 
-## Developer's Instructions
+These instructions are for developers ONLY!
 
 - Download DnSpy and extractt it somewhere
 - Navigate to the `AI The Somnium Files\AI_TheSomniumFiles_Data\Managed folder`
@@ -15,7 +25,10 @@ So far I have added a x/y/z movement keys, with shift to increase speed.
 - Expand the `Assembly-CSharp.dll` arrow
 - Expand the `Game` arrow
 - Navigate to the `InputProc` class
-- Replace the `Update()` function of the `InputProc` class with the below code (In Unity, `Update()` is called once every game tick)
+- Right click the class and click "add class members"
+  - Add two class variables - `float cumX = 0;` and `float cumY = 0;`
+  - Add a `private void LateUpdate()` function to the class (see unity documentation for when this function is called)
+- Replace the `LateUpdate()` function of the `InputProc` class with the below code (In Unity, `Update()` is called once every game tick)
 - Save the module. (You should enable "save extra metadata" or else the variable names will be lost in the saved DLLs?).
 
 ### Source Code for Update() function of InputProc class
@@ -70,21 +83,35 @@ private void LateUpdate()
 }
 ```
 
+### Setting up debugging
+
+NOTE: I have found debugging not to be very useful, but you might find it useful for checking variables/values etc.
+
+I just followed the instructions from https://github.com/0xd4d/dnSpy/wiki/Debugging-Unity-Games, but the below might be useful to you anyway.
+
+The current version of the game runs Unity 2017.4.17, 64-bit
+- Download Unity 2017.4.17, 64-bit from https://github.com/0xd4d/dnSpy/releases
+- Replace your existing one in the `AI The Somnium Files\AI_TheSomniumFiles_Data\Mono\EmbedRuntime` folder (keep a backup)
+- Click the green > button in dnspy
+- In the dropdown, click "Unity game" option
+- Find the game .exe `AI_TheSomniumFiles.exe`
+- Start debugging
+
 ## TODO
 
-- Unlock camera rotation, or add camera rotation button (rotation currently limited by game)
-  - Override the default rotation with `CinemachineCustomAxis.GetAxisCustom()`?
+- Only modify the current camera, not all cameras in the scene.
 
 ## Notes
 
 - I want to use the "inputaxis" function, but I'm not sure what they named the axis. I haven't tried the default values, maybe that's worth a try?
 - The axis (for the mouse X/Y) appear to be the default "Mouse X" and "Mouse Y", as seen in the `CinemachineCustomAxis.GetAxisCustom()` function.
-
+- LuaCameraController?
 
 ## Resources Used
 
 - https://www.unknowncheats.me/forum/unity/285864-beginners-guide-hacking-unity-games.html
 - DnSpy
+
 
 ### Unity Pages
 
