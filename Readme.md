@@ -27,9 +27,13 @@ private void LateUpdate()
     float mouseSensitivity = 10f;
     foreach (Camera camera in Camera.allCameras)
     {
+        //Add FPS camera rotation
         this.cumX += Input.GetAxis("Mouse X") * mouseSensitivity * Time.deltaTime;
         this.cumY += Input.GetAxis("Mouse Y") * mouseSensitivity * Time.deltaTime;
+        this.cumY = Mathf.Clamp(this.cumY, -90f, 90f);
         camera.transform.eulerAngles = new Vector3(-this.cumY, this.cumX, 0f);
+
+        //Add FPS camera movement
         Vector3 moveDir = default(Vector3);
         float speed = (Input.GetKey(KeyCode.RightShift) || Input.GetKey(KeyCode.LeftShift)) ? 20f : 2f;
         speed *= Time.deltaTime;
