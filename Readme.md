@@ -15,9 +15,13 @@ I don't recommend playing the game the first time around with this mod enabled, 
 
 - Press **F8 to enable FPS mode**, and **F9 to revert to normal mode**. I've tried my best to "revert to normal mode" but this can break sometimes.
 - Use the arrow keys to translate the camera. Hold the shift key to move faster. Use the mouse to rotate the camera.
-- NOTE: make sure to exit FPS mode before accessing the menus, or you'll have various problems. If you do this accidentally, disable FPS mode, then return to the main menu to fix it.
 - Any changes to the camera you make apply to ALL cameras - this is why the character portraits move when you move.
 - Certain scenes look like they're in-game, but they are actually videos. Since it's a video, you cannot move the camera.
+
+#### Known Bugs and wierd behaviors
+
+- Make sure to exit FPS mode before accessing the menus, or you'll have various problems. If you do this accidentally, disable FPS mode, then return to the main menu to fix it.
+- Wierd things can happen if you enable FPS mode during cinematic scenes in Somniums. I recommend waiting until you enter 3rd person mode before activating the camera.
 
 ## Developer's Instructions / Reproduction Instructions
 
@@ -35,7 +39,17 @@ BIG NOTE: when you do "edit class" with dnspy, it may screw up the code dependin
   - copy in the below code just below the `InputProc` class definition
 - Save the module. (You should enable "save extra metadata" or else the variable names will be lost in the saved DLLs?).
 
+ALWAYS remember to save the module (with the game closed?), otherwise your changes won't be seen.
+
 ### Source Code for Update() function of InputProc class
+
+#### Imports
+
+```csharp
+using Cinemachine;
+```
+
+#### Add to InputProc class body
 
 ```csharp
 struct CameraBackupState {
@@ -47,6 +61,9 @@ float rotX;
 float rotY;
 bool fpsEnabled = false;
 Dictionary<Camera, CameraBackupState> backupCameraPositions;
+Dictionary<CinemachineCollider, bool> backupCollisionStates;
+Dictionary<CinemachineFreeLook, Transform> backupFollows;
+GameObject cube;
 
 // Game.InputProc
 private void LateUpdate()
@@ -96,6 +113,8 @@ private void LateUpdate()
             }
 
             camera.transform.position += moveDir;
+            // TODO: In the fps update loop, move the tracker and all the 
+            cube.transform.position += moveDir;
         }
 
         if(Input.GetKeyDown(KeyCode.F9)) {
@@ -109,7 +128,29 @@ private void LateUpdate()
                     camera.transform.eulerAngles = backupCameraState.eulerAngles;
                 }
             }
+
+            // Restore cinemachine follow targets
+            foreach(CinemachineFreeLook freelook in FindObjectsOfType<CinemachineFreeLook>())
+            {
+                if(backupFollows.TryGetValue(freelook, out Transform backupFollow))
+                {
+                    freelook.Follow = backupFollow;
+                }
+            }
+
+            // Restore collider states
+            foreach(CinemachineCollider collider in  UnityEngine.Object.FindObjectsOfType<CinemachineCollider>())
+            {
+                if(backupCollisionStates.TryGetValue(collider, out bool avoidObstacles))
+                {
+                    collider.m_AvoidObstacles = avoidObstacles;
+                }
+            }
+
+            // Clear backups
             this.backupCameraPositions.Clear();
+            backupCollisionStates.Clear();
+            backupFollows.Clear();
         }
     }
     else {
@@ -124,6 +165,16 @@ private void LateUpdate()
                 backupCameraPositions = new Dictionary<Camera, CameraBackupState>();
             }
 
+            if(backupFollows == null)
+            {
+                backupFollows = new Dictionary<CinemachineFreeLook, Transform>();
+            }
+
+            if(backupCollisionStates == null)
+            {
+                backupCollisionStates = new Dictionary<CinemachineCollider, bool>();
+            }
+
             //backup the current camera(s) position
             foreach (Camera camera in Camera.allCameras)
             {
@@ -132,6 +183,28 @@ private void LateUpdate()
                     eulerAngles = camera.transform.eulerAngles,
                 };
             }
+
+            //////////////// Modify somium camera so it can be moved properly ////////////////
+            //Disable camera collisions on all cinemachine coliders
+            foreach(CinemachineCollider collider in UnityEngine.Object.FindObjectsOfType<CinemachineCollider>())
+            {
+                backupCollisionStates[collider] = collider.m_AvoidObstacles;
+                collider.m_AvoidObstacles = false;
+            }
+
+            // TODO: Spawn a unity object (lets call it tracker), save it to the class
+            if(cube == null)
+            {
+                cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            }
+
+            // TODO: Set all CinemachineFreeLook objects "Follow" field to the spawned unity object
+            foreach(CinemachineFreeLook freelook in FindObjectsOfType<CinemachineFreeLook>())
+            {
+                backupFollows[freelook] = freelook.Follow;
+                freelook.Follow = cube.transform;
+            }
+            //////////////// Modify somium camera so it can be moved properly ////////////////
         }
     }
 }
@@ -153,7 +226,8 @@ The current version of the game runs Unity 2017.4.17, 64-bit
 
 ## TODO
 
-- Only modify the current camera, not all cameras in the scene.
+- Only modify the current camera, not all cameras in the scene. (Note: Using dnspy's debug mode, Camera.allCameras actually lists named cameras)
+- Freecam in somniums?
 
 ## Notes
 
@@ -165,6 +239,7 @@ The current version of the game runs Unity 2017.4.17, 64-bit
 
 - https://www.unknowncheats.me/forum/unity/285864-beginners-guide-hacking-unity-games.html
 - DnSpy
+- https://docs.unity3d.com/Packages/com.unity.cinemachine@2.3/manual/CinemachineFreeLook.html
 
 ### Unity Pages
 
