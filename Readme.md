@@ -13,15 +13,26 @@ I don't recommend playing the game the first time around with this mod enabled, 
 
 ### Usage and Notes
 
-- Press **F8 to enable FPS mode**, and **F9 to revert to normal mode**. I've tried my best to "revert to normal mode" but this can break sometimes.
+- Press **F8 to enable FPS mode**, and **F9 to revert to normal mode**
 - Use the arrow keys to translate the camera. Hold the shift key to move faster. Use the mouse to rotate the camera.
 - Any changes to the camera you make apply to ALL cameras - this is why the character portraits move when you move.
 - Certain scenes look like they're in-game, but they are actually videos. Since it's a video, you cannot move the camera.
+- Common Problems:
+  - Don't hold right click in somniums to rotate - use only the mouse.
+  - **Make sure to exit FPS mode before accessing the menus (F9)**, otherwise you can't operate the menus/flowchart will be empty.
 
 #### Known Bugs and wierd behaviors
 
-- Make sure to exit FPS mode before accessing the menus, or you'll have various problems. If you do this accidentally, disable FPS mode, then return to the main menu to fix it.
-- Wierd things can happen if you enable FPS mode during cinematic scenes in Somniums. I recommend waiting until you enter 3rd person mode before activating the camera.
+- Cameras won't always revert to their proper position when you press F9 (especially during cinematic scenes)
+- Cinematic scenes while in somnium seem to break my method of moving the camera - but you can still rotate the camera.
+- The pink box in somniums represents your current physical position in the world. When pressing F8, the pink box will spawn directly underneath the player. A side affect of this is that the box can be used to lift and push the player around.
+- If the pink box gets in the way, hold right click while moving the mouse and you can rotate the camera around the pink box.
+- Since my method moves all cameras, including the character portrait camera, the character portrait will move/disappear when you use FPS mode. 
+
+#### Interesting findings
+
+- I actually haven't found anything "unexpected", like unused rooms etc in the game - it seems fairly clean/expected.
+- Although you cannot jump in somniums, the game has a falling animation for characters (presumably it comes as a default feature of whatever they used). You can also walk and fall down from any collidable object in the game.
 
 ## Developer's Instructions / Reproduction Instructions
 
@@ -43,13 +54,13 @@ ALWAYS remember to save the module (with the game closed?), otherwise your chang
 
 ### Source Code for Update() function of InputProc class
 
-#### Imports
+#### Add code at top of InputProc.cs
 
 ```csharp
 using Cinemachine;
 ```
 
-#### Add to InputProc class body
+#### Add code to InputProc Class
 
 ```csharp
 struct CameraBackupState {
@@ -73,6 +84,15 @@ private void LateUpdate()
         float mouseSensitivity = 10f;
         foreach (Camera camera in Camera.allCameras)
         {
+            //Backup the camera if it hasn't already been backed up
+            if(!backupCameraPositions.ContainsKey(camera))
+            {
+                backupCameraPositions[camera] = new CameraBackupState() {
+                    position = camera.transform.position,
+                    eulerAngles = camera.transform.eulerAngles,
+                };
+            }
+
             //Add FPS camera rotation
             this.rotX += Input.GetAxis("Mouse X") * mouseSensitivity * Time.deltaTime;
             this.rotY += Input.GetAxis("Mouse Y") * mouseSensitivity * Time.deltaTime;
@@ -112,8 +132,10 @@ private void LateUpdate()
                 moveDir -= speed * Vector3.up;
             }
 
+            // Each 'noraml' camera has an overridePosition where translation is accumulated
             camera.transform.position += moveDir;
-            // TODO: In the fps update loop, move the tracker and all the 
+
+            // Move the Follow target for the Cinemachine cameras
             cube.transform.position += moveDir;
         }
 
@@ -175,15 +197,6 @@ private void LateUpdate()
                 backupCollisionStates = new Dictionary<CinemachineCollider, bool>();
             }
 
-            //backup the current camera(s) position
-            foreach (Camera camera in Camera.allCameras)
-            {
-                backupCameraPositions[camera] = new CameraBackupState() {
-                    position = camera.transform.position,
-                    eulerAngles = camera.transform.eulerAngles,
-                };
-            }
-
             //////////////// Modify somium camera so it can be moved properly ////////////////
             //Disable camera collisions on all cinemachine coliders
             foreach(CinemachineCollider collider in UnityEngine.Object.FindObjectsOfType<CinemachineCollider>())
@@ -201,6 +214,9 @@ private void LateUpdate()
             // TODO: Set all CinemachineFreeLook objects "Follow" field to the spawned unity object
             foreach(CinemachineFreeLook freelook in FindObjectsOfType<CinemachineFreeLook>())
             {
+                //Set the cube's location to the last freelook follow's position, to give a decent initial position
+                cube.transform.position = freelook.Follow.position;
+
                 backupFollows[freelook] = freelook.Follow;
                 freelook.Follow = cube.transform;
             }
@@ -239,6 +255,7 @@ The current version of the game runs Unity 2017.4.17, 64-bit
 
 - https://www.unknowncheats.me/forum/unity/285864-beginners-guide-hacking-unity-games.html
 - DnSpy
+- https://docs.unity3d.com/Packages/com.unity.cinemachine@2.3/manual/CinemachineOverview.html
 - https://docs.unity3d.com/Packages/com.unity.cinemachine@2.3/manual/CinemachineFreeLook.html
 
 ### Unity Pages
