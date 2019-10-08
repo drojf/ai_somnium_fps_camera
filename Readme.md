@@ -75,6 +75,7 @@ Dictionary<Camera, CameraBackupState> backupCameraPositions;
 Dictionary<CinemachineCollider, bool> backupCollisionStates;
 Dictionary<CinemachineFreeLook, Transform> backupFollows;
 GameObject cube;
+CinemachineFreeLook customFreeLook;
 
 // Game.InputProc
 private void LateUpdate()
@@ -141,6 +142,14 @@ private void LateUpdate()
 
         if(Input.GetKeyDown(KeyCode.F9)) {
             this.fpsEnabled = false;
+
+            if(customFreeLook != null)
+            {
+                //Delete the custom freelook camera
+                Destroy(customFreeLook);
+                customFreeLook = null;
+            }
+
             //attempt to restore each camera's transform. If you enter a menu or change scene without exiting, this might break.
             foreach (Camera camera in Camera.allCameras)
             {
@@ -217,8 +226,19 @@ private void LateUpdate()
                 //Set the cube's location to the last freelook follow's position, to give a decent initial position
                 cube.transform.position = freelook.Follow.position;
 
-                backupFollows[freelook] = freelook.Follow;
-                freelook.Follow = cube.transform;
+                //Spawn a new cinemachine camera, attached to a new transform
+                customFreeLook = (CinemachineFreeLook) Instantiate(freelook);
+
+                //set Follow to cube
+                customFreeLook.Follow = cube.transform;
+
+                //give it the highest priority
+                customFreeLook.m_Priority = int.MaxValue;
+                break;
+
+
+                //backupFollows[freelook] = freelook.Follow;
+                //freelook.Follow = cube.transform;
             }
             //////////////// Modify somium camera so it can be moved properly ////////////////
         }
