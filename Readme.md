@@ -27,7 +27,8 @@ I don't recommend playing the game the first time around with this mod enabled, 
 - Cinematic scenes while in somnium seem to break my method of moving the camera - but you can still rotate the camera.
 - The pink box in somniums represents your current physical position in the world. When pressing F8, the pink box will spawn directly underneath the player. A side affect of this is that the box can be used to lift and push the player around.
 - If the pink box gets in the way, hold right click while moving the mouse and you can rotate the camera around the pink box.
-- Since my method moves all cameras, including the character portrait camera, the character portrait will move/disappear when you use FPS mode. 
+- Since my method moves all cameras, including the character portrait camera, the character portrait will move/disappear when you use FPS mode.
+- If the camera starts rotating randomly, enter and leave the main menu and it should stop.
 
 #### Interesting findings
 
@@ -82,62 +83,72 @@ private void LateUpdate()
 {
     if(this.fpsEnabled)
     {
-        float mouseSensitivity = 10f;
+        float mouseSensitivity = 100f;
+
+        //Add FPS camera rotation
+        this.rotX += Input.GetAxis("Mouse X") * mouseSensitivity * Time.deltaTime;
+        this.rotY += Input.GetAxis("Mouse Y") * mouseSensitivity * Time.deltaTime;
+        this.rotY = Mathf.Clamp(this.rotY, -90f, 90f);
+
         foreach (Camera camera in Camera.allCameras)
         {
-            //Backup the camera if it hasn't already been backed up
-            if(!backupCameraPositions.ContainsKey(camera))
+            // Only move the right camera (used in ADV mode) and character camera (used in somniums)
+            if(camera.name == "RightCamera" || camera.name == "Character Camera")
             {
-                backupCameraPositions[camera] = new CameraBackupState() {
-                    position = camera.transform.position,
-                    eulerAngles = camera.transform.eulerAngles,
-                };
-            }
+                camera.transform.eulerAngles = new Vector3(-this.rotY, this.rotX, 0f);
 
-            //Add FPS camera rotation
-            this.rotX += Input.GetAxis("Mouse X") * mouseSensitivity * Time.deltaTime;
-            this.rotY += Input.GetAxis("Mouse Y") * mouseSensitivity * Time.deltaTime;
-            this.rotY = Mathf.Clamp(this.rotY, -90f, 90f);
-            camera.transform.eulerAngles = new Vector3(-this.rotY, this.rotX, 0f);
+                //Backup the camera if it hasn't already been backed up
+                if(!backupCameraPositions.ContainsKey(camera))
+                {
+                    backupCameraPositions[camera] = new CameraBackupState() {
+                        position = camera.transform.position,
+                        eulerAngles = camera.transform.eulerAngles,
+                    };
+                }
 
-            //Add FPS camera movement
-            Vector3 moveDir = default(Vector3);
-            float speed = (Input.GetKey(KeyCode.RightShift) || Input.GetKey(KeyCode.LeftShift)) ? 20f : 2f;
-            speed *= Time.deltaTime;
+                //Add FPS camera movement
+                Vector3 moveDir = default(Vector3);
+                float speed = (Input.GetKey(KeyCode.RightShift) || Input.GetKey(KeyCode.LeftShift)) ? 20f : 2f;
+                speed *= Time.deltaTime;
 
-            //Move right and forward relative to the camera
-            if (Input.GetKey(KeyCode.UpArrow))
-            {
-                moveDir += speed * camera.transform.forward;
-            }
-            if (Input.GetKey(KeyCode.DownArrow))
-            {
-                moveDir -= speed * camera.transform.forward;
-            }
-            if (Input.GetKey(KeyCode.RightArrow))
-            {
-                moveDir += speed * camera.transform.right;
-            }
-            if (Input.GetKey(KeyCode.LeftArrow))
-            {
-                moveDir -= speed * camera.transform.right;
-            }
+                //Move right and forward relative to the camera
+                if (Input.GetKey(KeyCode.UpArrow))
+                {
+                    moveDir += speed * camera.transform.forward;
+                }
+                if (Input.GetKey(KeyCode.DownArrow))
+                {
+                    moveDir -= speed * camera.transform.forward;
+                }
+                if (Input.GetKey(KeyCode.RightArrow))
+                {
+                    moveDir += speed * camera.transform.right;
+                }
+                if (Input.GetKey(KeyCode.LeftArrow))
+                {
+                    moveDir -= speed * camera.transform.right;
+                }
 
-            //Always move up/down the Z axis
-            if (Input.GetKey(KeyCode.LeftBracket))
-            {
-                moveDir += speed * Vector3.up;
-            }
-            if (Input.GetKey(KeyCode.RightBracket))
-            {
-                moveDir -= speed * Vector3.up;
-            }
+                //Always move up/down the Z axis
+                if (Input.GetKey(KeyCode.LeftBracket))
+                {
+                    moveDir += speed * Vector3.up;
+                }
+                if (Input.GetKey(KeyCode.RightBracket))
+                {
+                    moveDir -= speed * Vector3.up;
+                }
 
-            // Each 'noraml' camera has an overridePosition where translation is accumulated
-            camera.transform.position += moveDir;
-
-            // Move the Follow target for the Cinemachine cameras
-            cube.transform.position += moveDir;
+                if (camera.name == "Character Camera")
+                {
+                    this.cube.transform.position += moveDir;
+                }
+                else
+                {
+                    // Each 'noraml' camera has an overridePosition where translation is accumulated
+                    camera.transform.position += moveDir;
+                }
+            }
         }
 
         if(Input.GetKeyDown(KeyCode.F9)) {
@@ -220,14 +231,15 @@ private void LateUpdate()
                 cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
             }
 
-            // TODO: Set all CinemachineFreeLook objects "Follow" field to the spawned unity object
+            //Clone the existing  CinemachineFreeLook camera (if it exists)
             foreach(CinemachineFreeLook freelook in FindObjectsOfType<CinemachineFreeLook>())
             {
                 //Set the cube's location to the last freelook follow's position, to give a decent initial position
                 cube.transform.position = freelook.Follow.position;
 
-                //Spawn a new cinemachine camera, attached to a new transform
                 customFreeLook = (CinemachineFreeLook) Instantiate(freelook);
+                customFreeLook.name = "hackedFPSFreeLook";
+                //customFreeLook.enabled = true;
 
                 //set Follow to cube
                 customFreeLook.Follow = cube.transform;
@@ -270,6 +282,13 @@ The current version of the game runs Unity 2017.4.17, 64-bit
 - I want to use the "inputaxis" function, but I'm not sure what they named the axis. I haven't tried the default values, maybe that's worth a try?
 - The axis (for the mouse X/Y) appear to be the default "Mouse X" and "Mouse Y", as seen in the `CinemachineCustomAxis.GetAxisCustom()` function.
 - LuaCameraController?
+
+### Camera names
+
+- "Right Camera" - main camera for ADV mode?
+- "Character Camera" - Somnium camera (interacts with Cinemachine)
+- "Camera" - used for character portraits
+- Other camera names: BackgroundCamera, UICamera, UICamera2, UICamera3D, ButtonCamer, FrontCamera, MiddleCamera, AIBALL_RENDER_Camera, RightWindow
 
 ## Resources Used
 
