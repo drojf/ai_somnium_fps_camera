@@ -2,7 +2,7 @@
 
 This mod adds a FPS style camera to all? parts of the game, to inspect parts of the game you can't normally see.
 
-I don't recommend playing the game the first time around with this mod enabled, as various things may break unexpectedly.
+I don't recommend your first playthrough have this mod enabled, as various things may break unexpectedly.
 
 ## How to Install/Use
 
@@ -13,22 +13,23 @@ I don't recommend playing the game the first time around with this mod enabled, 
 
 ### Usage and Notes
 
-- Press **F8 to enable FPS mode**, and **F9 to revert to normal mode**
-- Use the arrow keys to translate the camera. Hold the shift key to move faster. Use the mouse to rotate the camera.
-- Any changes to the camera you make apply to ALL cameras - this is why the character portraits move when you move.
-- Certain scenes look like they're in-game, but they are actually videos. Since it's a video, you cannot move the camera.
+- This mod only works with mouse and keyboard (on PC)
+- Controls:
+  - Press **F8 to enable FPS mode**, and **F9 to revert to normal mode**
+  - Use the **arrow keys** to translate the camera.
+  - Hold the shift key to move faster.
+  - Move the mouse without holding any mouse buttons to rotate the camera.
 - Common Problems:
   - Don't hold right click in somniums to rotate - use only the mouse.
-  - **Make sure to exit FPS mode before accessing the menus (F9)**, otherwise you can't operate the menus/flowchart will be empty.
+  - Menus won't operate properly, or be invisible while in FPS mode. **Hit F9 to exit FPS mode to fix the menus**
+  - A few scenes look like they're in-game, but they are actually videos. Since it's a video, you cannot move the camera.
 
 #### Known Bugs and wierd behaviors
 
-- Cameras won't always revert to their proper position when you press F9 (especially during cinematic scenes)
-- Cinematic scenes while in somnium seem to break my method of moving the camera - but you can still rotate the camera.
+- Cameras may not always revert to their original position when you press F9
 - The pink box in somniums represents your current physical position in the world. When pressing F8, the pink box will spawn directly underneath the player. A side affect of this is that the box can be used to lift and push the player around.
 - If the pink box gets in the way, hold right click while moving the mouse and you can rotate the camera around the pink box.
-- Since my method moves all cameras, including the character portrait camera, the character portrait will move/disappear when you use FPS mode.
-- If the camera starts rotating randomly, enter and leave the main menu and it should stop.
+- If the camera starts rotating randomly in somniums, enter and leave the main menu and it should stop.
 
 #### Interesting findings
 
@@ -274,14 +275,15 @@ The current version of the game runs Unity 2017.4.17, 64-bit
 
 ## TODO
 
-- Only modify the current camera, not all cameras in the scene. (Note: Using dnspy's debug mode, Camera.allCameras actually lists named cameras)
-- Fix FPS Camera so it doesn't get reset each time camera changes, and works at all in somnium cinematics (Need to create proper Cinemachine camera)
+- add button to hide the UI ... is there already one in the game?
+- hide the pink box or use another invisible game object
 
 ## Notes
 
 - I want to use the "inputaxis" function, but I'm not sure what they named the axis. I haven't tried the default values, maybe that's worth a try?
 - The axis (for the mouse X/Y) appear to be the default "Mouse X" and "Mouse Y", as seen in the `CinemachineCustomAxis.GetAxisCustom()` function.
 - LuaCameraController?
+- Reduce near field clip to allow being closer to objects without clipping
 
 ### Camera names
 
@@ -289,6 +291,29 @@ The current version of the game runs Unity 2017.4.17, 64-bit
 - "Character Camera" - Somnium camera (interacts with Cinemachine)
 - "Camera" - used for character portraits
 - Other camera names: BackgroundCamera, UICamera, UICamera2, UICamera3D, ButtonCamer, FrontCamera, MiddleCamera, AIBALL_RENDER_Camera, RightWindow
+
+Camera List in Somnium:
+
+- BackgroundGamera
+- UICamera
+- UICamera2
+- UICamera3D
+- MiddleCamera
+- FrontCamera
+- UICamera
+- AIBALL_RENDER_Camera
+- Character Camera
+- RightWindow
+
+Camera list in ADV mode:
+
+- BackgroundCamera
+- UICamera
+- FrontCamera
+- ButtonCamera
+- UICamera
+- Camera
+- RightCamera
 
 ## Resources Used
 
