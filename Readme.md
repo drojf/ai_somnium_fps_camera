@@ -27,12 +27,20 @@ I don't recommend your first playthrough have this mod enabled, as various thing
   - Menus won't operate properly, or be invisible while in FPS mode. **Hit F9 to exit FPS mode to fix the menus**
   - A few scenes look like they're in-game, but they are actually videos. Since it's a video, you cannot move the camera.
 
-#### Known Bugs and wierd behaviors
+#### Known Bugs and wierd behaviors / Reporting Bugs
+
+Raise an issue on this github repository.
 
 - Cameras may not always revert to their original position when you press F9
-- The pink box in somniums represents your current physical position in the world. When pressing F8, the pink box will spawn directly underneath the player. A side affect of this is that the box can be used to lift and push the player around.
-- If the pink box gets in the way, hold right click while moving the mouse and you can rotate the camera around the pink box.
 - If the camera starts rotating randomly in somniums, enter and leave the main menu and it should stop.
+- If a new version of the game is released, probably everything will break until a new version of the mod is issued.
+- Somniums using the "Apartment" level may behave incorrectly (presumably because the base for the apartment is the "tutorial" level which may have it's cameras setup differently). It may be possible other levels that I've not tested also have problems, while other levels work just fine.
+
+##### F7 mode / Pink box
+
+- When pressing F7, the pink box will spawn directly underneath the player (it's the standard Unity cube).
+- The box can be used to lift and push the player around.
+- If the pink box gets in the way, hold right click while moving the mouse and you can rotate the camera around the pink box.
 
 #### Interesting findings
 
@@ -45,7 +53,7 @@ These instructions are for developers ONLY!
 
 BIG NOTE: when you do "edit class" with dnspy, it may screw up the code depending on your settings. In this case, you should re-start with the original exe if you made changes, or just close/open the program again. Maybe some DnSpy experts can tell me what's happeneing or if I'm doing something wrong.
 
-- Download DnSpy and extractt it somewhere
+- Download DnSpy and extract it somewhere
 - Navigate to the `AI The Somnium Files\AI_TheSomniumFiles_Data\Managed folder`
 - Open the `Assembly-CSharp.dll` with dnspy, **while it's in the same folder as all the other DLLs**. If it's not in the same folder as the other DLLS, dnspy won't be able to find them.
 - Expand the `Assembly-CSharp.dll` arrow
@@ -267,21 +275,21 @@ The current version of the game runs Unity 2017.4.17, 64-bit
 - Download Unity 2017.4.17, 64-bit from https://github.com/0xd4d/dnSpy/releases
 - Replace your existing one in the `AI The Somnium Files\AI_TheSomniumFiles_Data\Mono\EmbedRuntime` folder (keep a backup)
 - Click the green > button in dnspy
-- In the dropdown, click "Unity game" option
+- **In the dropdown, click "Unity game" option**. This setting resets when DnSpy is closed, so remember to set it.
+- I think you must launch the 64 bit version of DnSpy for debugging to work
 - Find the game .exe `AI_TheSomniumFiles.exe`
 - Start debugging
 
 ## TODO
 
 - add button to hide the UI ... is there already one in the game?
-- hide the pink box or use another invisible game object
+- Reduce near field clip of camera to allow being closer to objects without clipping
 
 ## Notes
 
 - I want to use the "inputaxis" function, but I'm not sure what they named the axis. I haven't tried the default values, maybe that's worth a try?
 - The axis (for the mouse X/Y) appear to be the default "Mouse X" and "Mouse Y", as seen in the `CinemachineCustomAxis.GetAxisCustom()` function.
 - LuaCameraController?
-- Reduce near field clip to allow being closer to objects without clipping
 
 ### Camera names
 
