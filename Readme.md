@@ -75,7 +75,6 @@ float rotY;
 bool fpsEnabled = false;
 Dictionary<Camera, CameraBackupState> backupCameraPositions;
 Dictionary<CinemachineCollider, bool> backupCollisionStates;
-Dictionary<CinemachineFreeLook, Transform> backupFollows;
 GameObject cube;
 CinemachineFreeLook customFreeLook;
 
@@ -157,9 +156,14 @@ private void LateUpdate()
 
             if(customFreeLook != null)
             {
-                //Delete the custom freelook camera
-                Destroy(customFreeLook);
-                customFreeLook = null;
+                //Set the custom freelook camera to the lowest priority so it becomes disabled
+                customFreeLook.m_Priority = int.MinValue;
+            }
+
+            if(cube != null)
+            {
+                Destroy(cube);
+                cube = null;
             }
 
             //attempt to restore each camera's transform. If you enter a menu or change scene without exiting, this might break.
@@ -169,15 +173,6 @@ private void LateUpdate()
                 {
                     camera.transform.position = backupCameraState.position;
                     camera.transform.eulerAngles = backupCameraState.eulerAngles;
-                }
-            }
-
-            // Restore cinemachine follow targets
-            foreach(CinemachineFreeLook freelook in FindObjectsOfType<CinemachineFreeLook>())
-            {
-                if(backupFollows.TryGetValue(freelook, out Transform backupFollow))
-                {
-                    freelook.Follow = backupFollow;
                 }
             }
 
@@ -193,11 +188,10 @@ private void LateUpdate()
             // Clear backups
             this.backupCameraPositions.Clear();
             backupCollisionStates.Clear();
-            backupFollows.Clear();
         }
     }
     else {
-        if(Input.GetKeyDown(KeyCode.F8))
+        if(Input.GetKeyDown(KeyCode.F7) | Input.GetKeyDown(KeyCode.F8))
         {
             this.fpsEnabled = true;
             this.rotX = 0;
@@ -206,11 +200,6 @@ private void LateUpdate()
             if(backupCameraPositions == null)
             {
                 backupCameraPositions = new Dictionary<Camera, CameraBackupState>();
-            }
-
-            if(backupFollows == null)
-            {
-                backupFollows = new Dictionary<CinemachineFreeLook, Transform>();
             }
 
             if(backupCollisionStates == null)
@@ -226,32 +215,38 @@ private void LateUpdate()
                 collider.m_AvoidObstacles = false;
             }
 
-            // TODO: Spawn a unity object (lets call it tracker), save it to the class
-            if(cube == null)
+            // Spawn a unity object for the CinemachineFreeLook to follow, save it to the class
+            if(Input.GetKeyDown(KeyCode.F8))
+            {
+                cube = new GameObject();
+            }
+            else
             {
                 cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
             }
 
-            //Clone the existing  CinemachineFreeLook camera (if it exists)
+            //Clone the first existing CinemachineFreeLook camera (if it exists)
             foreach(CinemachineFreeLook freelook in FindObjectsOfType<CinemachineFreeLook>())
             {
-                //Set the cube's location to the last freelook follow's position, to give a decent initial position
-                cube.transform.position = freelook.Follow.position;
+                if(freelook.name != "hackedFPSFreeLook") {
+                    //Set the cube's location to the last freelook follow's position, to give a decent initial position
+                    cube.transform.position = freelook.Follow.position;
 
-                customFreeLook = (CinemachineFreeLook) Instantiate(freelook);
-                customFreeLook.name = "hackedFPSFreeLook";
-                //customFreeLook.enabled = true;
+                    if(customFreeLook == null)
+                    {
+                        customFreeLook = (CinemachineFreeLook) Instantiate(freelook);
+                    }
 
-                //set Follow to cube
-                customFreeLook.Follow = cube.transform;
+                    customFreeLook.name = "hackedFPSFreeLook";
 
-                //give it the highest priority
-                customFreeLook.m_Priority = int.MaxValue;
-                break;
+                    //set Follow to cube
+                    customFreeLook.Follow = cube.transform;
 
+                    //give it the highest priority
+                    customFreeLook.m_Priority = int.MaxValue;
+                    break;
 
-                //backupFollows[freelook] = freelook.Follow;
-                //freelook.Follow = cube.transform;
+                }
             }
             //////////////// Modify somium camera so it can be moved properly ////////////////
         }
