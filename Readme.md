@@ -16,9 +16,12 @@ I don't recommend your first playthrough have this mod enabled, as various thing
 - This mod only works with mouse and keyboard (on PC)
 - Controls:
   - Press **F8 to enable FPS mode**, and **F9 to revert to normal mode**
-  - Use the **arrow keys** to translate the camera.
-  - Hold the shift key to move faster.
+  - Put your fingers on the P, ";", L, and "'" keys, and pretend they're the arrow keys
+  - Use P and `;` to move forwards and backwards
+  - Use L and `'` to move left and right
+  - Hold the shift key to move faster
   - Move the mouse without holding any mouse buttons to rotate the camera.
+  - Optional: In Somniums, press F7 to enter FPS mode and also spawn a pink box.
 - Common Problems:
   - Don't hold right click in somniums to rotate - use only the mouse.
   - Menus won't operate properly, or be invisible while in FPS mode. **Hit F9 to exit FPS mode to fix the menus**
@@ -112,19 +115,19 @@ private void LateUpdate()
                 speed *= Time.deltaTime;
 
                 //Move right and forward relative to the camera
-                if (Input.GetKey(KeyCode.UpArrow))
+                if (Input.GetKey(KeyCode.P))
                 {
                     moveDir += speed * camera.transform.forward;
                 }
-                if (Input.GetKey(KeyCode.DownArrow))
+                if (Input.GetKey(KeyCode.Semicolon))
                 {
                     moveDir -= speed * camera.transform.forward;
                 }
-                if (Input.GetKey(KeyCode.RightArrow))
+                if (Input.GetKey(KeyCode.Quote))
                 {
                     moveDir += speed * camera.transform.right;
                 }
-                if (Input.GetKey(KeyCode.LeftArrow))
+                if (Input.GetKey(KeyCode.L))
                 {
                     moveDir -= speed * camera.transform.right;
                 }
