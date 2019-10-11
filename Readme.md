@@ -24,7 +24,7 @@ I don't recommend your first playthrough have this mod enabled, as various thing
   - Optional: In Somniums, press F7 to enter FPS mode and also spawn a pink box.
 - Common Problems:
   - Don't hold right click in somniums to rotate - use only the mouse.
-  - Menus won't operate properly, or be invisible while in FPS mode. **Hit F9 to exit FPS mode to fix the menus**
+  - Menus might not operate properly, or be invisible while in FPS mode. If this happens **Hit F9 to exit FPS mode**.
   - A few scenes look like they're in-game, but they are actually videos. Since it's a video, you cannot move the camera.
 
 #### Known Bugs and wierd behaviors / Reporting Bugs
@@ -300,7 +300,7 @@ The current version of the game runs Unity 2017.4.17, 64-bit
 
 Camera List in Somnium:
 
-- BackgroundGamera
+- BackgroundCamera
 - UICamera
 - UICamera2
 - UICamera3D
@@ -320,6 +320,7 @@ Camera list in ADV mode:
 - UICamera
 - Camera
 - RightCamera
+- Camera01 (Cinematic camera?)
 
 ## Resources Used
 
