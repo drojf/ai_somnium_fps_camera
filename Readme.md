@@ -128,9 +128,9 @@ private void LateUpdate()
     {
         float mouseSensitivity = 100f;
 
-        //Add FPS camera rotation
-        this.rotX += Input.GetAxis("Mouse X") * mouseSensitivity * Time.deltaTime;
-        this.rotY += Input.GetAxis("Mouse Y") * mouseSensitivity * Time.deltaTime;
+        //Add FPS camera rotation (independent of timescale)
+        this.rotX += Input.GetAxis("Mouse X") * mouseSensitivity * Time.unscaledDeltaTime;
+        this.rotY += Input.GetAxis("Mouse Y") * mouseSensitivity * Time.unscaledDeltaTime;
         this.rotY = Mathf.Clamp(this.rotY, -90f, 90f);
 
         foreach (Camera camera in Camera.allCameras)
@@ -149,10 +149,10 @@ private void LateUpdate()
                     };
                 }
 
-                //Add FPS camera movement
+                //Add FPS camera movement (independent of timescale)
                 Vector3 moveDir = default(Vector3);
-                float speed = (Input.GetKey(KeyCode.RightShift) || Input.GetKey(KeyCode.LeftShift)) ? 20f : 2f;
-                speed *= Time.deltaTime;
+                float speed = (Input.GetKey(KeyCode.RightShift) || Input.GetKey(KeyCode.LeftShift)) ? 20f : 1.5f;
+                speed *= Time.unscaledDeltaTime;
 
                 //Move right and forward relative to the camera
                 if (Input.GetKey(KeyCode.P))
