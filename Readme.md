@@ -88,6 +88,11 @@ Dictionary<Camera, CameraBackupState> backupCameraPositions;
 Dictionary<CinemachineCollider, bool> backupCollisionStates;
 GameObject cube;
 CinemachineFreeLook customFreeLook;
+Vector3 camPosOverride;
+
+bool cameraMightBeActiveCamera(Camera camera) {
+    return !camera.name.Contains("UICamera") && !camera.name.Contains("Button") && !camera.name.Contains("Background") && camera.name != "Camera";
+}
 
 // Game.InputProc
 private void LateUpdate()
@@ -104,7 +109,7 @@ private void LateUpdate()
         foreach (Camera camera in Camera.allCameras)
         {
             // Only move the right camera (used in ADV mode) and character camera (used in somniums)
-            if(camera.name == "RightCamera" || camera.name == "Character Camera")
+            if (cameraMightBeActiveCamera(camera) || camera.name == "Character Camera")
             {
                 camera.transform.eulerAngles = new Vector3(-this.rotY, this.rotX, 0f);
 
@@ -156,8 +161,13 @@ private void LateUpdate()
                 }
                 else
                 {
-                    // Each 'noraml' camera has an overridePosition where translation is accumulated
-                    camera.transform.position += moveDir;
+                    //move camera itself, only if not using a customFreeLookCamera
+                    if(customFreeLook == null)
+                    {
+                        // Each 'normal' camera has an overridePosition where translation is accumulated
+                        camPosOverride += moveDir;
+                        camera.transform.position = camPosOverride;
+                    }
                 }
             }
         }
@@ -169,6 +179,7 @@ private void LateUpdate()
             {
                 //Set the custom freelook camera to the lowest priority so it becomes disabled
                 customFreeLook.m_Priority = int.MinValue;
+                customFreeLook = null;
             }
 
             if(cube != null)
@@ -225,6 +236,18 @@ private void LateUpdate()
                 backupCollisionStates[collider] = collider.m_AvoidObstacles;
                 collider.m_AvoidObstacles = false;
             }
+
+            //Set initial camera override position to the first "might be active camera" camera
+            camPosOverride = new Vector3();
+            foreach (Camera camera in Camera.allCameras)
+            {
+                if(cameraMightBeActiveCamera(camera))
+                {
+                    camPosOverride = camera.transform.position;
+                    break;
+                }
+            }
+
 
             // Spawn a unity object for the CinemachineFreeLook to follow, save it to the class
             if(Input.GetKeyDown(KeyCode.F8))
