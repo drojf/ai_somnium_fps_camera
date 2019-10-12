@@ -97,6 +97,27 @@ bool cameraMightBeActiveCamera(Camera camera) {
 // Game.InputProc
 private void LateUpdate()
 {
+    // Use F5 key to toggle slowmo (see https://docs.unity3d.com/ScriptReference/Time-timeScale.html)
+    if (Input.GetKeyDown(KeyCode.F5))
+    {
+        if (Time.timeScale == 1.0f)
+        {
+            Time.timeScale = 0.1f;
+        }
+        else if (Time.timeScale == .1f)
+        {
+            Time.timeScale = 0.01f;
+        }
+        else
+        {
+            Time.timeScale = 1.0f;
+        }
+
+        // Adjust fixed delta time according to timescale
+        // The fixed delta time will now be 0.02 frames per real-time second
+        Time.fixedDeltaTime = 0.02f * Time.timeScale;
+    }
+
     if(this.fpsEnabled)
     {
         float mouseSensitivity = 100f;
