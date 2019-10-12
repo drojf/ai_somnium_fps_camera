@@ -97,20 +97,20 @@ bool cameraMightBeActiveCamera(Camera camera) {
 // Game.InputProc
 private void LateUpdate()
 {
-    // Use F1-3 for slowmo: F1 = normal, F2 = 10x slower, F3 = 100x slower
+    // Use F2-4 for slowmo: F2 = normal, F3 = 10x slower, F4 = 100x slower
     // see https://docs.unity3d.com/ScriptReference/Time-timeScale.html)
     {
         float newTimeScale = 0f;
 
-        if (Input.GetKeyDown(KeyCode.F1))
+        if (Input.GetKeyDown(KeyCode.F2))
         {
             newTimeScale = 1f;
         }
-        else if(Input.GetKeyDown(KeyCode.F2))
+        else if(Input.GetKeyDown(KeyCode.F3))
         {
             newTimeScale = 0.1f;
         }
-        else if(Input.GetKeyDown(KeyCode.F3))
+        else if(Input.GetKeyDown(KeyCode.F4))
         {
             newTimeScale = 0.01f;
         }
