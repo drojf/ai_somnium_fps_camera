@@ -39,6 +39,16 @@ The current version of the game runs Unity 2017.4.17, 64-bit
 - Find the game .exe `AI_TheSomniumFiles.exe`
 - Start debugging
 
+### Rendering
+
+From what I can gather, rendering works like this:
+
+- Various cameras render to a texture
+- This gets put on a UI UnityEngine.UI.RawImage type object (thats the base type at least) called "Image" (there are multiple of these named "Image" when viewed in the inspector)
+- The camera named "UICamera" then renders the "Image" UI widget (and all the other UI widgets)
+
+As a result, if you disable either the "UICamera" camera or disable the "Image" GUI widget, the 3D part of the game won't be displayed.
+
 ### Camera names
 
 - "Right Camera" - main camera for ADV mode?
@@ -48,16 +58,16 @@ The current version of the game runs Unity 2017.4.17, 64-bit
 
 Camera List in Somnium:
 
-- BackgroundCamera
-- UICamera
-- UICamera2
-- UICamera3D
-- MiddleCamera
-- FrontCamera
-- UICamera
-- AIBALL_RENDER_Camera
-- Character Camera
-- RightWindow
+- BackgroundCamera - might be used for UI?
+- UICamera - Disabling this makes screen blank in somniums, so maybe it's the final compositing step. Cursor might be rendered also.
+- UICamera2 - might be used for UI?
+- UICamera3D - might be used for UI?
+- MiddleCamera - might be used for UI?
+- FrontCamera - might be used for UI?
+- RightCamera - might be used for UI?
+- RightWindow - might be used for UI?
+- Character Camera - used for character portraits
+- AIBALL_RENDER_Camera - used for AIBALL vision (I assume)
 
 Camera list in ADV mode:
 
@@ -66,9 +76,13 @@ Camera list in ADV mode:
 - FrontCamera
 - ButtonCamera
 - UICamera
-- Camera
+- Camera - used for character portraits?
 - RightCamera
 - Camera01 (Cinematic camera?)
+
+### Class info
+
+- "TextController" used to draw the text glyphs on the screen (but not for the portrait window or text background)
 
 ## Resources Used
 
