@@ -3,6 +3,7 @@
 
 //Merge this line into existing includes
 using Cinemachine;
+using UnityEngine.UI;
 
 //Merge into existing InputProc class
 class InputProc
@@ -12,14 +13,69 @@ class InputProc
         public Vector3 eulerAngles;
     }
 
+    bool immediateGUIHidden;
     float rotX;
     float rotY;
     bool fpsEnabled = false;
+    //Used to save/restore the "enabled" state of the GUI cameras
+    Dictionary<Camera, Vector3> backupGUICameraState;
+    //Used to save/restore the color (including alpha value) of the GUI elements
+    //Dictionary<Graphic, Color> backupGUIColor;
+    //Used to save the position/rotation of each 'normal' camera
     Dictionary<Camera, CameraBackupState> backupCameraPositions;
+    //Used to save whether collision is enabled/disabled of each cinemachine collider (which is attached to a cinemachine camera)
     Dictionary<CinemachineCollider, bool> backupCollisionStates;
     GameObject cube;
     CinemachineFreeLook customFreeLook;
     Vector3 camPosOverride;
+
+    // Game.InputProc
+    // Tip: Use the Unity Editor to prototype the GUI rather than trying to do it in-game
+    private void OnGUI()
+    {
+        if(!immediateGUIHidden)
+        {
+            //GUI.Box(new Rect(10f, 10f, 450f, 90f), "Mod Menu");
+            //GUI.Button(new Rect(20f, 100f, 400f, 20f), "Button 1");
+            //GUI.Button(new Rect(20f, 120f, 400f, 20f), "Button 2");
+
+            // Make a background box
+            Rect backgroundArea = new Rect (10f, 10f, 400f, Screen.height - 20f);
+
+            Rect contentArea = new Rect (backgroundArea.x + 10f, 
+                                        backgroundArea.y + 20f, 
+                                        backgroundArea.width - 20f, 
+                                        backgroundArea.height - 20f);
+
+            GUI.Box(backgroundArea, "Mod Menu");
+
+            GUILayout.BeginArea(contentArea);
+
+            GUILayout.Label(
+@" Press F11 to toggle this Mod Menu! 
+
+Basic Controls:
+F8 - Enable Noclip/FPS mode
+F9 - Disable Noclip/FPS mode
+P and ; - Move forward and back (hold SHIFT to move faster)
+L  and ' - Move left and right (hold SHIFT to move faster)
+SHIFT - Hold to move faster
+Mouse Rotation - Rotate the camera (while in FPS mode)
+
+Extra Controls:
+F10 - Toggle GUI
+F2 - Disable Slow Motion (revert to normal speed)
+F3 - 10x Slow Motion
+F4 - 100x Slow Motion (almost freezes the game)
+F7 - Enable Noclip/FPS Mode with Magenta Box
+[ - Move vertically upwards
+] - Move vertically downwards
+
+Press F11 to toggle this Mod Menu! 
+");
+            GUILayout.EndArea ();
+        }
+    }
 
     bool cameraMightBeActiveCamera(Camera camera) {
         return !camera.name.Contains("UICamera") && !camera.name.Contains("Button") && !camera.name.Contains("Background") && camera.name != "Camera";
@@ -28,6 +84,83 @@ class InputProc
     // Game.InputProc
     private void LateUpdate()
     {
+        if(Input.GetKeyDown(KeyCode.F11))
+        {
+            immediateGUIHidden = !immediateGUIHidden;
+        }
+
+        // Press F12 to toggle GUI on/off
+        if(Input.GetKeyDown(KeyCode.F10))
+        {
+            if(backupGUICameraState == null)
+            {
+                backupGUICameraState = new Dictionary<Camera, Vector3>();
+                foreach (Camera camera in Camera.allCameras)
+                {
+                    /*camera.name == "UICamera2" ||
+                        camera.name == "MiddleCamera" ||
+                        camera.name == "FrontCamera" ||
+                        camera.name == "RightWindow" ||
+                        camera.name == "RightCamera" ||
+                        camera.name == "BackgroundCamera" ||
+                        camera.name == "Camera" ||   //ADV mode only Cinematic camera?
+                        camera.name == "Camera01" || //ADV mode only Cinematic camera?
+                        camera.name == "ButtonCamera" //ADV mode only*/
+                    //if(camera.name.Contains("UICamera") || camera.name.Contains("Button"))
+
+                    //Disable the left character bust camera.
+                    if (camera.name != "Camera")
+                    {
+                        //backupGUICameraState[camera] = camera.enabled;
+                        backupGUICameraState[camera] = camera.transform.position;
+                        //Move the camera way out of the way so the GUI isn't rendered
+                        //If you disable the camera, the game will just spawn a new camera
+                        camera.transform.position = new Vector3(1000000, 1000000, 0);
+                    }
+                }
+
+                //For all UI elements except those named "Image":
+                // - Backup the UI color values
+                // - Set 0 alpha
+                //backupGUIColor = new Dictionary<Graphic, Color>();
+                foreach(Graphic graphic in UnityEngine.Object.FindObjectsOfType(typeof(Graphic)))
+                {
+                    //backupGUIColor[graphic] = graphic.color;
+                    // Set graphics not named "Image" to 0 alpha
+                    if (graphic.name != "Image")
+                    {
+                        graphic.CrossFadeAlpha(0f, .1f, true);
+                    }
+                }
+            }
+            else
+            {
+                // Restore the "enabled" state of each GUI camera
+                foreach(KeyValuePair<Camera, Vector3> kvp in backupGUICameraState)
+                {
+                    kvp.Key.transform.position = kvp.Value;
+                }
+
+                foreach(Graphic graphic in UnityEngine.Object.FindObjectsOfType(typeof(Graphic)))
+                {
+                    // Set graphics not named "Image" to 1 alpha This doesn't properly restore the UI's alpha value (if it was not originally '1') but should be good enough
+                    if (graphic.name != "Image")
+                    {
+                        graphic.CrossFadeAlpha(1f, .1f, true);
+                    }
+                }
+
+                // Restore the "color" state of each UI element
+                //foreach(KeyValuePair<Graphic, Color> kvp in backupGUIColor)
+                //{
+                //    kvp.Key.color = kvp.Value;
+                //}
+
+                backupGUICameraState = null;
+                //backupGUIColor = null;
+            }
+        }
+
         // Use F2-4 for slowmo: F2 = normal, F3 = 10x slower, F4 = 100x slower
         // see https://docs.unity3d.com/ScriptReference/Time-timeScale.html)
         {
