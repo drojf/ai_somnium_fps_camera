@@ -271,22 +271,16 @@ Press F11 to toggle this Mod Menu! (for screenshots)
                 }
 
                 //attempt to restore each camera's transform. If you enter a menu or change scene without exiting, this might break.
-                foreach (Camera camera in Camera.allCameras)
+                foreach(KeyValuePair<Camera, CameraBackupState> kvp in backupCameraPositions)
                 {
-                    if(backupCameraPositions.TryGetValue(camera, out CameraBackupState backupCameraState))
-                    {
-                        camera.transform.position = backupCameraState.position;
-                        camera.transform.eulerAngles = backupCameraState.eulerAngles;
-                    }
+                    kvp.Key.transform.position = kvp.Value.position;
+                    kvp.Key.transform.eulerAngles = kvp.Value.eulerAngles;
                 }
 
                 // Restore collider states
-                foreach(CinemachineCollider collider in  UnityEngine.Object.FindObjectsOfType<CinemachineCollider>())
+                foreach(KeyValuePair<CinemachineCollider, bool> kvp in backupCollisionStates)
                 {
-                    if(backupCollisionStates.TryGetValue(collider, out bool avoidObstacles))
-                    {
-                        collider.m_AvoidObstacles = avoidObstacles;
-                    }
+                    kvp.Key.m_AvoidObstacles = kvp.Value;
                 }
 
                 // Clear backups
