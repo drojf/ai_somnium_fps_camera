@@ -52,7 +52,7 @@ class InputProc
             GUILayout.BeginArea(contentArea);
 
             GUILayout.Label(
-@" Press F11 to toggle this Mod Menu! 
+@" Press F11 to toggle this Mod Menu! (for screenshots)
 
 Basic Controls:
 F8 - Enable Noclip/FPS mode
@@ -68,10 +68,8 @@ F2 - Disable Slow Motion (revert to normal speed)
 F3 - 10x Slow Motion
 F4 - 100x Slow Motion (almost freezes the game)
 F7 - Enable Noclip/FPS Mode with Magenta Box
-[ - Move vertically upwards
-] - Move vertically downwards
 
-Press F11 to toggle this Mod Menu! 
+Press F11 to toggle this Mod Menu! (for screenshots)
 ");
             GUILayout.EndArea ();
         }
@@ -97,21 +95,9 @@ Press F11 to toggle this Mod Menu!
                 backupGUICameraState = new Dictionary<Camera, Vector3>();
                 foreach (Camera camera in Camera.allCameras)
                 {
-                    /*camera.name == "UICamera2" ||
-                        camera.name == "MiddleCamera" ||
-                        camera.name == "FrontCamera" ||
-                        camera.name == "RightWindow" ||
-                        camera.name == "RightCamera" ||
-                        camera.name == "BackgroundCamera" ||
-                        camera.name == "Camera" ||   //ADV mode only Cinematic camera?
-                        camera.name == "Camera01" || //ADV mode only Cinematic camera?
-                        camera.name == "ButtonCamera" //ADV mode only*/
-                    //if(camera.name.Contains("UICamera") || camera.name.Contains("Button"))
-
-                    //Disable the left character bust camera.
-                    if (camera.name != "Camera")
+                    //Disable the character bust camera (called "Camera")
+                    if (camera.name == "Camera")
                     {
-                        //backupGUICameraState[camera] = camera.enabled;
                         backupGUICameraState[camera] = camera.transform.position;
                         //Move the camera way out of the way so the GUI isn't rendered
                         //If you disable the camera, the game will just spawn a new camera
@@ -122,10 +108,8 @@ Press F11 to toggle this Mod Menu!
                 //For all UI elements except those named "Image":
                 // - Backup the UI color values
                 // - Set 0 alpha
-                //backupGUIColor = new Dictionary<Graphic, Color>();
                 foreach(Graphic graphic in UnityEngine.Object.FindObjectsOfType(typeof(Graphic)))
                 {
-                    //backupGUIColor[graphic] = graphic.color;
                     // Set graphics not named "Image" to 0 alpha
                     if (graphic.name != "Image")
                     {
@@ -141,23 +125,30 @@ Press F11 to toggle this Mod Menu!
                     kvp.Key.transform.position = kvp.Value;
                 }
 
+                // Set all "UnityEngine.UI.Graphic" objects not named "Image" to 1 alpha
+                // This doesn't properly restore the UI's alpha value (if it was not originally '1') but should be good enough
                 foreach(Graphic graphic in UnityEngine.Object.FindObjectsOfType(typeof(Graphic)))
                 {
-                    // Set graphics not named "Image" to 1 alpha This doesn't properly restore the UI's alpha value (if it was not originally '1') but should be good enough
                     if (graphic.name != "Image")
                     {
                         graphic.CrossFadeAlpha(1f, .1f, true);
                     }
                 }
 
-                // Restore the "color" state of each UI element
-                //foreach(KeyValuePair<Graphic, Color> kvp in backupGUIColor)
-                //{
-                //    kvp.Key.color = kvp.Value;
-                //}
-
                 backupGUICameraState = null;
-                //backupGUIColor = null;
+            }
+        }
+
+        // Every keyframe, move the camera way out of the way so the GUI isn't rendered
+        // We can't disable the camera, as the game will just spawn a new camera if it detects the normal camera is disabled.
+        if(backupGUICameraState != null) 
+        {
+            foreach (Camera camera2 in Camera.allCameras)
+            {
+                if (camera2.name == "Camera")
+                {
+                    camera2.transform.position = new Vector3(1E+07f, 1E+07f, 0f);
+                }
             }
         }
 
