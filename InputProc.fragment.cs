@@ -19,8 +19,6 @@ class InputProc
     bool fpsEnabled = false;
     //Used to save/restore the "enabled" state of the GUI cameras
     Dictionary<Camera, Vector3> backupGUICameraState;
-    //Used to save/restore the color (including alpha value) of the GUI elements
-    //Dictionary<Graphic, Color> backupGUIColor;
     //Used to save the position/rotation of each 'normal' camera
     Dictionary<Camera, CameraBackupState> backupCameraPositions;
     //Used to save whether collision is enabled/disabled of each cinemachine collider (which is attached to a cinemachine camera)
@@ -47,12 +45,12 @@ class InputProc
                                         backgroundArea.width - 20f, 
                                         backgroundArea.height - 20f);
 
-            GUI.Box(backgroundArea, "Mod Menu");
+            GUI.Box(backgroundArea, "Keyboard Shortcuts");
 
             GUILayout.BeginArea(contentArea);
 
             GUILayout.Label(
-@" Press F11 to toggle this Mod Menu! (for screenshots)
+@"Press F10 & F11 to toggle the GUIs! (for taking screenshots)
 
 Basic Controls:
 F8 - Enable Noclip/FPS mode
@@ -63,13 +61,14 @@ SHIFT - Hold to move faster
 Mouse Rotation - Rotate the camera (while in FPS mode)
 
 Extra Controls:
-F10 - Toggle GUI
+F10 - Toggle Game GUI (for taking screenshots)
+F11 - Toggle this window (for taking screenshots)
 F2 - Disable Slow Motion (revert to normal speed)
-F3 - 10x Slow Motion
+F3 - 10x Slow Motion (for taking screenshots)
 F4 - 100x Slow Motion (almost freezes the game)
 F7 - Enable Noclip/FPS Mode with Magenta Box
 
-Press F11 to toggle this Mod Menu! (for screenshots)
+Press F10 & F11 to toggle the GUIs! (for taking screenshots)
 ");
             GUILayout.EndArea ();
         }
@@ -77,6 +76,12 @@ Press F11 to toggle this Mod Menu! (for screenshots)
 
     bool cameraMightBeActiveCamera(Camera camera) {
         return !camera.name.Contains("UICamera") && !camera.name.Contains("Button") && !camera.name.Contains("Background") && camera.name != "Camera";
+    }
+
+    void forceGraphicAlpha(Graphic graphic, float newAlpha) {
+        Color color = graphic.canvasRenderer.GetColor();
+        color.a = newAlpha;
+        graphic.canvasRenderer.SetColor(color);
     }
 
     // Game.InputProc
@@ -104,18 +109,6 @@ Press F11 to toggle this Mod Menu! (for screenshots)
                         camera.transform.position = new Vector3(1000000, 1000000, 0);
                     }
                 }
-
-                //For all UI elements except those named "Image":
-                // - Backup the UI color values
-                // - Set 0 alpha
-                foreach(Graphic graphic in UnityEngine.Object.FindObjectsOfType(typeof(Graphic)))
-                {
-                    // Set graphics not named "Image" to 0 alpha
-                    if (graphic.name != "Image")
-                    {
-                        graphic.CrossFadeAlpha(0f, .1f, true);
-                    }
-                }
             }
             else
             {
@@ -131,7 +124,7 @@ Press F11 to toggle this Mod Menu! (for screenshots)
                 {
                     if (graphic.name != "Image")
                     {
-                        graphic.CrossFadeAlpha(1f, .1f, true);
+                        forceGraphicAlpha(graphic, 1f);
                     }
                 }
 
@@ -148,6 +141,22 @@ Press F11 to toggle this Mod Menu! (for screenshots)
                 if (camera2.name == "Camera")
                 {
                     camera2.transform.position = new Vector3(1E+07f, 1E+07f, 0f);
+                }
+            }
+        }
+
+        // This must be done every frame (or periodically) in case you hover over an item in ADV mode which causes a new UI widget to spawn
+        //For all UI elements except those named "Image":
+        // - Backup the UI color values
+        // - Set 0 alpha
+        if(backupGUICameraState != null)
+        {
+            foreach(Graphic graphic in UnityEngine.Object.FindObjectsOfType(typeof(Graphic)))
+            {
+                // Set graphics not named "Image" to 0 alpha
+                if (graphic.name != "Image")
+                {
+                    forceGraphicAlpha(graphic, 0f);
                 }
             }
         }
