@@ -87,37 +87,22 @@ Press F10 & F11 to toggle the GUIs! (for taking screenshots)
     // Game.InputProc
     private void LateUpdate()
     {
+        // Press F11 to toggle the keyboard shortcuts window
         if(Input.GetKeyDown(KeyCode.F11))
         {
             immediateGUIHidden = !immediateGUIHidden;
         }
 
-        // Press F12 to toggle GUI on/off
+        // Press F10 to toggle GUI on/off
         if(Input.GetKeyDown(KeyCode.F10))
         {
             if(backupGUICameraState == null)
             {
+                // This can be replaced with a bool later
                 backupGUICameraState = new Dictionary<Camera, Vector3>();
-                foreach (Camera camera in Camera.allCameras)
-                {
-                    //Disable the character bust camera (called "Camera")
-                    if (camera.name == "Camera")
-                    {
-                        backupGUICameraState[camera] = camera.transform.position;
-                        //Move the camera way out of the way so the GUI isn't rendered
-                        //If you disable the camera, the game will just spawn a new camera
-                        camera.transform.position = new Vector3(1000000, 1000000, 0);
-                    }
-                }
             }
             else
             {
-                // Restore the "enabled" state of each GUI camera
-                foreach(KeyValuePair<Camera, Vector3> kvp in backupGUICameraState)
-                {
-                    kvp.Key.transform.position = kvp.Value;
-                }
-
                 // Set all "UnityEngine.UI.Graphic" objects not named "Image" to 1 alpha
                 // This doesn't properly restore the UI's alpha value (if it was not originally '1') but should be good enough
                 foreach(Graphic graphic in UnityEngine.Object.FindObjectsOfType(typeof(Graphic)))
@@ -132,16 +117,15 @@ Press F10 & F11 to toggle the GUIs! (for taking screenshots)
             }
         }
 
-        // Every keyframe, move the camera way out of the way so the GUI isn't rendered
+        // Every keyframe, rotate the bustshot camera way out of the way so the character isn't rendered
         // We can't disable the camera, as the game will just spawn a new camera if it detects the normal camera is disabled.
-        if(backupGUICameraState != null) 
+        foreach (Camera camera2 in Camera.allCameras)
         {
-            foreach (Camera camera2 in Camera.allCameras)
+            if (camera2.name == "Camera")
             {
-                if (camera2.name == "Camera")
-                {
-                    camera2.transform.position = new Vector3(1E+07f, 1E+07f, 0f);
-                }
+                camera2.transform.rotation = ((this.backupGUICameraState == null) ? 
+                new Quaternion(0f, -1f, 0f, 0f) : // This is the normal position, camera pointing forwards
+                new Quaternion(0f, 0f, -1f, 0f)); // This disables the camera by pointing the camera backwards
             }
         }
 
