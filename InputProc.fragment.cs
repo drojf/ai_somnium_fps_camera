@@ -81,6 +81,8 @@ Rarely Used Controls:
 F6 - Enable Noclip/FPS Mode with Magenta Box
 
 Press F10 & F11 to toggle the GUIs! (for taking screenshots)
+
+https://github.com/drojf/ai_somnium_fps_camera
 ");
             GUILayout.EndArea ();
         }

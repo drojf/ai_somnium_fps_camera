@@ -13,6 +13,7 @@ This mod may be useful for taking screenshots or videos of the game. You can als
 
 - Please try out all the major hotkeys (displayed in-game), even if you don't think you'll use them - you might find them handy at some point
 - Please see the "Known bugs and wierd behaviors" section of this page if you have problems with the mod.
+- In ADV mode, when you enter FPS mode via the `F8` key, the current state of the cameras is saved, and when you leave with the `F9` key, it is restored. If you enter FPS mode (`F8`) at a bad time (such as during a cinematic), when you hit `F9` you might be restored to a bad state. Therefore, it's best to enter FPS mode when in the "resting" position, although it cannot always be avoided.
 
 ## Installation
 
@@ -69,7 +70,7 @@ These shortcuts are useful when taking screenshots to hide the GUI or slow down 
 
 ### Clip Distance
 
-- In some scenes, the camera will clip into objects very easily. By pressiong `F7` you can toggle to a shorter clip distance. Please note that doing this may cause graphical artifacts with shadows. In addition, ADV mode deliberately uses clipping to avoid seeing the characters own head - with this mode enabled and the camera in the default ADV position, you'll see the inside of the character's head.
+- In some scenes, the camera will clip into objects very easily. By pressing `F7` you can toggle to a shorter clip distance. Please note that doing this may cause graphical artifacts with shadows. In addition, ADV mode deliberately uses clipping to avoid seeing the characters own head - with this mode enabled and the camera in the default ADV position, you'll see the inside of the character's head.
 
 ### F6 mode / magenta box
 
