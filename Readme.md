@@ -53,12 +53,13 @@ These shortcuts are useful when taking screenshots to hide the GUI or slow down 
 | `F2` | Disable Slow Motion (revert to normal speed) |
 | `F3` | 10x Slow Motion |
 | `F4` | 100x Slow Motion (almost freezes the game) |
+| `F7` | Toggle clip distance (get closer without clipping) |
 
 ### Rarely Used Controls
 
 | Key | Action |
 | --- | --- |
-| `F7` | Enable Noclip/FPS Mode with Magenta Box under player |
+| `F6` | Enable Noclip/FPS Mode with Magenta Box under player |
 | `[` | Move vertically upwards (lift player in somnium with Magenta Box) |
 | `]` | Move vertically downwards |
 
@@ -67,9 +68,13 @@ These shortcuts are useful when taking screenshots to hide the GUI or slow down 
 - Menus might not operate properly, or be invisible while in FPS mode. If this happens **Hit `F9` to revert to normal mode**.
 - In Somniums, don't hold right click to rotate - use only the mouse. If you right click, you'll rotate in two different ways at once.
 
-### F7 mode / magenta box
+### Clip Distance
 
-- You can press `F7` instead of `F8` to enter FPS mode. If you do this, a magenta box will spawn directly underneath the player (it's the standard Unity cube).
+- In some scenes, the camera will clip into objects very easily. By pressiong `F7` you can reduce the clip distance. Please note that doing this may cause graphical artifacts with shadows.
+
+### F6 mode / magenta box
+
+- You can press `F6` instead of `F8` to enter FPS mode. If you do this, a magenta box will spawn directly underneath the player (it's the standard Unity cube).
 - In somniums, the box can be used to lift and push the player around.
 - If the magenta box gets in the way of the camera, hold right click while moving the mouse and you can rotate the camera around the magenta box.
 
@@ -102,7 +107,7 @@ Insert Spoiler Tagged Images here
 ## TODO
 
 - ~~Add button to hide the UI (for taking screenshots) ... is there already a button for this in the game?~~
-- Reduce near field clip of camera to allow being closer to objects without clipping (https://forum.unity.com/threads/recommended-minimum-near-clipping-plane-of-cameras.348620/)
+- ~~Reduce near field clip of camera to allow being closer to objects without clipping~~ (https://forum.unity.com/threads/recommended-minimum-near-clipping-plane-of-cameras.348620/)
 - Allow selectively hiding AIBALL? need to run some tests to see if this will work as intended
 - Should this be added? Add momentum/smoothing to movement?
 
