@@ -80,6 +80,115 @@ Camera list in ADV mode:
 - RightCamera
 - Camera01 (Cinematic camera?)
 
+### GUI "Graphic" list
+
+There are multiple graphics named "image" - these seem to be used as render targets.
+One is used to render the main 3D display
+One might be used for the AIBall display.
+I wanted to selectively enable the AIBall display, but since it has the same name it's difficult to pick out.
+The "Mask" graphic may also have something to do with the AIBall display
+
+Boss's room example:
+
+- array	{UnityEngine.UI.Graphic[0x00000060]}	UnityEngine.Object[] {UnityEngine.UI.Graphic[]}
+- [0]	{TutorialWindow (Game.NonDrawingGraphic)}	UnityEngine.UI.Graphic {Game.NonDrawingGraphic}
+- [1]	{Image3b (UnityEngine.UI.Image)}	UnityEngine.UI.Graphic {UnityEngine.UI.Image}
+- [2]	{Image2 (UnityEngine.UI.Image)}	UnityEngine.UI.Graphic {UnityEngine.UI.Image}
+- [3]	{IconText (UnityEngine.UI.RawImage)}	UnityEngine.UI.Graphic {UnityEngine.UI.RawImage}
+- [4]	{Image01 (UnityEngine.UI.Image)}	UnityEngine.UI.Graphic {UnityEngine.UI.Image}
+- [5]	{Prompt (UnityEngine.UI.Image)}	UnityEngine.UI.Graphic {UnityEngine.UI.Image}
+- [6]	{Text (TMPro.TextMeshProUGUI)}	UnityEngine.UI.Graphic {TMPro.TextMeshProUGUI}
+- [7]	{Image_R (UnityEngine.UI.Image)}	UnityEngine.UI.Graphic {UnityEngine.UI.Image}
+- [8]	{TutorialWindow (Game.NonDrawingGraphic)}	UnityEngine.UI.Graphic {Game.NonDrawingGraphic}
+- [9]	{TutorialWindow (Game.NonDrawingGraphic)}	UnityEngine.UI.Graphic {Game.NonDrawingGraphic}
+- [10]	{TutorialWindow (Game.NonDrawingGraphic)}	UnityEngine.UI.Graphic {Game.NonDrawingGraphic}
+- [11]	{TutorialWindow (Game.NonDrawingGraphic)}	UnityEngine.UI.Graphic {Game.NonDrawingGraphic}
+- [12]	{Image4 (UnityEngine.UI.Image)}	UnityEngine.UI.Graphic {UnityEngine.UI.Image}
+- [13]	{Image1 (UnityEngine.UI.Image)}	UnityEngine.UI.Graphic {UnityEngine.UI.Image}
+- [14]	{Image5 (UnityEngine.UI.Image)}	UnityEngine.UI.Graphic {UnityEngine.UI.Image}
+- [15]	{Image3c (UnityEngine.UI.Image)}	UnityEngine.UI.Graphic {UnityEngine.UI.Image}
+- [16]	{Text (TMPro.TextMeshProUGUI)}	UnityEngine.UI.Graphic {TMPro.TextMeshProUGUI}
+- [17]	{Button (UnityEngine.UI.Image)}	UnityEngine.UI.Graphic {UnityEngine.UI.Image}
+- [18]	{Image (UnityEngine.UI.Image)}	UnityEngine.UI.Graphic {UnityEngine.UI.Image}
+- [19]	{Image (UnityEngine.UI.Image)}	UnityEngine.UI.Graphic {UnityEngine.UI.Image}
+- [20]	{Text (TMPro.TextMeshProUGUI)}	UnityEngine.UI.Graphic {TMPro.TextMeshProUGUI}
+- [21]	{Folder (UnityEngine.UI.Image)}	UnityEngine.UI.Graphic {UnityEngine.UI.Image}
+- [22]	{Base (Game.NonDrawingGraphic)}	UnityEngine.UI.Graphic {Game.NonDrawingGraphic}
+- [23]	{Image3 (UnityEngine.UI.Image)}	UnityEngine.UI.Graphic {UnityEngine.UI.Image}
+- [24]	{Button_02 (UnityEngine.UI.Image)}	UnityEngine.UI.Graphic {UnityEngine.UI.Image}
+- [25]	{FilterBlur (UnityEngine.UI.Image)}	UnityEngine.UI.Graphic {UnityEngine.UI.Image}
+- [26]	{Background (UnityEngine.UI.Image)}	UnityEngine.UI.Graphic {UnityEngine.UI.Image}
+- [27]	{BG01 (UnityEngine.UI.Image)}	UnityEngine.UI.Graphic {UnityEngine.UI.Image}
+- [28]	{Filter (UnityEngine.UI.Image)}	UnityEngine.UI.Graphic {UnityEngine.UI.Image}
+- [29]	{Mask (UnityEngine.UI.Image)}	UnityEngine.UI.Graphic {UnityEngine.UI.Image}
+- [30]	{Image2D (UnityEngine.UI.RawImage)}	UnityEngine.UI.Graphic {UnityEngine.UI.RawImage}
+- [31]	{LeftFilter (UnityEngine.UI.Image)}	UnityEngine.UI.Graphic {UnityEngine.UI.Image}
+- [32]	{Image (UnityEngine.UI.RawImage)}	UnityEngine.UI.Graphic {UnityEngine.UI.RawImage}
+- [33]	{Image04 (UnityEngine.UI.Image)}	UnityEngine.UI.Graphic {UnityEngine.UI.Image}
+- [34]	{Image (UnityEngine.UI.RawImage)}	UnityEngine.UI.Graphic {UnityEngine.UI.RawImage}
+- [35]	{ScreenScaler (Game.NonDrawingGraphic)}	UnityEngine.UI.Graphic {Game.NonDrawingGraphic}
+- [36]	{Image (UnityEngine.UI.Image)}	UnityEngine.UI.Graphic {UnityEngine.UI.Image}
+- [37]	{Outline_back (UnityEngine.UI.Image)}	UnityEngine.UI.Graphic {UnityEngine.UI.Image}
+- [38]	{Normal (UnityEngine.UI.RawImage)}	UnityEngine.UI.Graphic {UnityEngine.UI.RawImage}
+- [39]	{FilterTop (UnityEngine.UI.Image)}	UnityEngine.UI.Graphic {UnityEngine.UI.Image}
+- [40]	{Text (TMPro.TextMeshProUGUI)}	UnityEngine.UI.Graphic {TMPro.TextMeshProUGUI}
+- [41]	{[Normal] (UnityEngine.UI.Image)}	UnityEngine.UI.Graphic {UnityEngine.UI.Image}
+- [42]	{Frame (UnityEngine.UI.Image)}	UnityEngine.UI.Graphic {UnityEngine.UI.Image}
+- [43]	{Image00 (UnityEngine.UI.Image)}	UnityEngine.UI.Graphic {UnityEngine.UI.Image}
+- [44]	{Button_03 (UnityEngine.UI.Image)}	UnityEngine.UI.Graphic {UnityEngine.UI.Image}
+- [45]	{Image2D (UnityEngine.UI.RawImage)}	UnityEngine.UI.Graphic {UnityEngine.UI.RawImage}
+- [46]	{Image (UnityEngine.UI.RawImage)}	UnityEngine.UI.Graphic {UnityEngine.UI.RawImage}
+- [47]	{Mask (UnityEngine.UI.Image)}	UnityEngine.UI.Graphic {UnityEngine.UI.Image}
+- [48]	{Button_01 (UnityEngine.UI.Image)}	UnityEngine.UI.Graphic {UnityEngine.UI.Image}
+- [49]	{ui_main_infoW02_hit_add (UnityEngine.UI.Image)}	UnityEngine.UI.Graphic {UnityEngine.UI.Image}
+- [50]	{ui_main_infoW01_add (UnityEngine.UI.Image)}	UnityEngine.UI.Graphic {UnityEngine.UI.Image}
+- [51]	{button_icon (UnityEngine.UI.Image)}	UnityEngine.UI.Graphic {UnityEngine.UI.Image}
+- [52]	{image (UnityEngine.UI.Image)}	UnityEngine.UI.Graphic {UnityEngine.UI.Image}
+- [53]	{image_rest2 (UnityEngine.UI.Image)}	UnityEngine.UI.Graphic {UnityEngine.UI.Image}
+- [54]	{image_rest3 (UnityEngine.UI.Image)}	UnityEngine.UI.Graphic {UnityEngine.UI.Image}
+- [55]	{Base (Game.NonDrawingGraphic)}	UnityEngine.UI.Graphic {Game.NonDrawingGraphic}
+- [56]	{Mask (Game.NonDrawingGraphic)}	UnityEngine.UI.Graphic {Game.NonDrawingGraphic}
+- [57]	{ui_main_infoW02_hit_add (UnityEngine.UI.Image)}	UnityEngine.UI.Graphic {UnityEngine.UI.Image}
+- [58]	{ui_main_infoW01_add (UnityEngine.UI.Image)}	UnityEngine.UI.Graphic {UnityEngine.UI.Image}
+- [59]	{button_icon (UnityEngine.UI.Image)}	UnityEngine.UI.Graphic {UnityEngine.UI.Image}
+- [60]	{image (UnityEngine.UI.Image)}	UnityEngine.UI.Graphic {UnityEngine.UI.Image}
+- [61]	{Base (Game.NonDrawingGraphic)}	UnityEngine.UI.Graphic {Game.NonDrawingGraphic}
+- [62]	{ui_main_infoW02_hit_add (UnityEngine.UI.Image)}	UnityEngine.UI.Graphic {UnityEngine.UI.Image}
+- [63]	{ui_main_infoW01_add (UnityEngine.UI.Image)}	UnityEngine.UI.Graphic {UnityEngine.UI.Image}
+- [64]	{button_icon (UnityEngine.UI.Image)}	UnityEngine.UI.Graphic {UnityEngine.UI.Image}
+- [65]	{image (UnityEngine.UI.Image)}	UnityEngine.UI.Graphic {UnityEngine.UI.Image}
+- [66]	{Base (Game.NonDrawingGraphic)}	UnityEngine.UI.Graphic {Game.NonDrawingGraphic}
+- [67]	{Mask (Game.NonDrawingGraphic)}	UnityEngine.UI.Graphic {Game.NonDrawingGraphic}
+- [68]	{ui_main_infoW02_hit_add (UnityEngine.UI.Image)}	UnityEngine.UI.Graphic {UnityEngine.UI.Image}
+- [69]	{ui_main_infoW01_add (UnityEngine.UI.Image)}	UnityEngine.UI.Graphic {UnityEngine.UI.Image}
+- [70]	{button_icon (UnityEngine.UI.Image)}	UnityEngine.UI.Graphic {UnityEngine.UI.Image}
+- [71]	{image (UnityEngine.UI.Image)}	UnityEngine.UI.Graphic {UnityEngine.UI.Image}
+- [72]	{Base (Game.NonDrawingGraphic)}	UnityEngine.UI.Graphic {Game.NonDrawingGraphic}
+- [73]	{Mask (Game.NonDrawingGraphic)}	UnityEngine.UI.Graphic {Game.NonDrawingGraphic}
+- [74]	{LoopHit_01 (UnityEngine.UI.Image)}	UnityEngine.UI.Graphic {UnityEngine.UI.Image}
+- [75]	{ColorHit_01 (UnityEngine.UI.Image)}	UnityEngine.UI.Graphic {UnityEngine.UI.Image}
+- [76]	{ui_main_infoW02_hit_add (UnityEngine.UI.Image)}	UnityEngine.UI.Graphic {UnityEngine.UI.Image}
+- [77]	{ui_main_infoW01_add (UnityEngine.UI.Image)}	UnityEngine.UI.Graphic {UnityEngine.UI.Image}
+- [78]	{button_icon (UnityEngine.UI.Image)}	UnityEngine.UI.Graphic {UnityEngine.UI.Image}
+- [79]	{image (UnityEngine.UI.Image)}	UnityEngine.UI.Graphic {UnityEngine.UI.Image}
+- [80]	{Base (Game.NonDrawingGraphic)}	UnityEngine.UI.Graphic {Game.NonDrawingGraphic}
+- [81]	{Mask (Game.NonDrawingGraphic)}	UnityEngine.UI.Graphic {Game.NonDrawingGraphic}
+- [82]	{ui_main_infoW02_hit_add (UnityEngine.UI.Image)}	UnityEngine.UI.Graphic {UnityEngine.UI.Image}
+- [83]	{ui_main_infoW01_add (UnityEngine.UI.Image)}	UnityEngine.UI.Graphic {UnityEngine.UI.Image}
+- [84]	{button_icon (UnityEngine.UI.Image)}	UnityEngine.UI.Graphic {UnityEngine.UI.Image}
+- [85]	{image (UnityEngine.UI.Image)}	UnityEngine.UI.Graphic {UnityEngine.UI.Image}
+- [86]	{Base (Game.NonDrawingGraphic)}	UnityEngine.UI.Graphic {Game.NonDrawingGraphic}
+- [87]	{Mask (Game.NonDrawingGraphic)}	UnityEngine.UI.Graphic {Game.NonDrawingGraphic}
+- [88]	{ui_main_infoW02_hit_add (UnityEngine.UI.Image)}	UnityEngine.UI.Graphic {UnityEngine.UI.Image}
+- [89]	{ui_main_infoW01_add (UnityEngine.UI.Image)}	UnityEngine.UI.Graphic {UnityEngine.UI.Image}
+- [90]	{button_icon (UnityEngine.UI.Image)}	UnityEngine.UI.Graphic {UnityEngine.UI.Image}
+- [91]	{image (UnityEngine.UI.Image)}	UnityEngine.UI.Graphic {UnityEngine.UI.Image}
+- [92]	{Base (Game.NonDrawingGraphic)}	UnityEngine.UI.Graphic {Game.NonDrawingGraphic}
+- [93]	{Mask (Game.NonDrawingGraphic)}	UnityEngine.UI.Graphic {Game.NonDrawingGraphic}
+- [94]	{BaseImage (UnityEngine.UI.Image)}	UnityEngine.UI.Graphic {UnityEngine.UI.Image}
+- [95]	{EffectBase (UnityEngine.UI.Image)}	UnityEngine.UI.Graphic {UnityEngine.UI.Image}
+
+
 ### Class info
 
 - "TextController" used to draw the text glyphs on the screen (but not for the portrait window or text background)
@@ -90,6 +199,8 @@ Camera list in ADV mode:
 - DnSpy
 - https://docs.unity3d.com/Packages/com.unity.cinemachine@2.3/manual/CinemachineOverview.html
 - https://docs.unity3d.com/Packages/com.unity.cinemachine@2.3/manual/CinemachineFreeLook.html
+- https://docs.unity3d.com/Manual/gui-Basics.html
+- https://docs.unity3d.com/2018.1/Documentation/ScriptReference/UI.Graphic.html
 
 ### Unity Pages
 

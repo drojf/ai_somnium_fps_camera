@@ -13,10 +13,19 @@ class InputProc
         public Vector3 eulerAngles;
     }
 
+    struct CameraClipState {
+        public float near;
+        public float far;
+    }
+
+    bool custom_clip;
     bool immediateGUIHidden;
     float rotX;
     float rotY;
     bool fpsEnabled = false;
+
+    //Used to save/restore the clip settings of the GUI cameras
+    Dictionary<Camera, CameraClipState> backupClipState;
     //Used to save/restore the "enabled" state of the GUI cameras
     Dictionary<Camera, Vector3> backupGUICameraState;
     //Used to save the position/rotation of each 'normal' camera
@@ -52,7 +61,7 @@ class InputProc
             GUILayout.Label(
 @"Press F10 & F11 to toggle the GUIs! (for taking screenshots)
 
-Basic Controls:
+Movement Controls:
 F8 - Enable Noclip/FPS mode
 F9 - Disable Noclip/FPS mode
 P and ; - Move forward and back (hold SHIFT to move faster)
@@ -60,13 +69,16 @@ L  and ' - Move left and right (hold SHIFT to move faster)
 SHIFT - Hold to move faster
 Mouse Rotation - Rotate the camera (while in FPS mode)
 
-Extra Controls:
-F10 - Toggle Game GUI (for taking screenshots)
+Screenshot Controls:
 F11 - Toggle this window (for taking screenshots)
+F10 - Toggle Game GUI (for taking screenshots)
 F2 - Disable Slow Motion (revert to normal speed)
 F3 - 10x Slow Motion (for taking screenshots)
 F4 - 100x Slow Motion (almost freezes the game)
-F7 - Enable Noclip/FPS Mode with Magenta Box
+F7 - Toggle clip distance (get closer without clipping)
+
+Rarely Used Controls:
+F6 - Enable Noclip/FPS Mode with Magenta Box
 
 Press F10 & F11 to toggle the GUIs! (for taking screenshots)
 ");
@@ -87,6 +99,41 @@ Press F10 & F11 to toggle the GUIs! (for taking screenshots)
     // Game.InputProc
     private void LateUpdate()
     {
+        if(Input.GetKeyDown(KeyCode.F7))
+        {
+            if(backupClipState == null)
+            {
+                backupClipState = new Dictionary<Camera, CameraClipState>();
+            }
+            else
+            {
+                // Restore clip settings
+                foreach(KeyValuePair<Camera, CameraClipState> kvp in backupClipState)
+                {
+                    kvp.Key.near = kvp.Value.near;
+                    kvp.Key.far = kvp.Value.far;
+                }
+                backupClipState = null;
+            }
+        }
+
+        if(backupClipState != null)
+        {
+            foreach (Camera camera in Camera.allCameras)
+            {
+                // If a new camera is found, backup clip settings, then force clip plane to .1
+                if(!backupClipState.ContainsKey(camera))
+                {
+                    backupClipState[camera] = new CameraClipState() {
+                        near = camera.near,
+                        far = camera.far,
+                    };
+
+                    camera.near = .1f;
+                }
+            }
+        }
+
         // Press F11 to toggle the keyboard shortcuts window
         if(Input.GetKeyDown(KeyCode.F11))
         {
@@ -282,7 +329,7 @@ Press F10 & F11 to toggle the GUIs! (for taking screenshots)
             }
         }
         else {
-            if(Input.GetKeyDown(KeyCode.F7) | Input.GetKeyDown(KeyCode.F8))
+            if(Input.GetKeyDown(KeyCode.F6) | Input.GetKeyDown(KeyCode.F8))
             {
                 this.fpsEnabled = true;
                 this.rotX = 0;
@@ -316,7 +363,6 @@ Press F10 & F11 to toggle the GUIs! (for taking screenshots)
                         break;
                     }
                 }
-
 
                 // Spawn a unity object for the CinemachineFreeLook to follow, save it to the class
                 if(Input.GetKeyDown(KeyCode.F8))
