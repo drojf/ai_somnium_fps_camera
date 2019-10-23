@@ -205,3 +205,45 @@ Boss's room example:
 ### Unity Pages
 
 https://docs.unity3d.com/ScriptReference/Camera-allCameras.html
+
+## AI_TheSomniumFiles Arguments
+
+The game has a `Launcher.exe` which calls `AI_TheSomniumFiles.exe` depending on the graphics options you chose. For example:
+
+`"C:\games\Steam\steamapps\common\AI The Somnium Files\AI_TheSomniumFiles.exe"  quality=2 window=0 msaa=2 width=2560 height=1440 vsync=1 filtering=1 hint=0`
+
+## Widescreen Resolution Hacking Attempts
+
+I attempted to change the resolution to widescreen using the above command line arguments. (eg in the above, set `width=2000 height=800`)
+
+If you do this, everything will be set to a 16:9 ratio, and also some GUI will be extremely large.
+
+I then attempted to force the game to the correct ratio by editing the `Game.ScreenScaler` classes `Update()` function. (found by searching `1920` literal in Dnspy (remember to change the search method or you'll get nothing))
+
+I added this code at the bottom of the function:
+
+```csharp
+    //Lots of existing code emitted here
+    // ??? Maybe set the default screen offset to 0, so drawing begins at the top left of the screen
+    this.rectTransform.anchoredPosition = new Vector2(0f, 0f);
+    // ??? Maybe scale the already scaled resolution to undo the the 16:9 ratio and then apply the Width/Height ratio
+    base.transform.localScale = new Vector3(base.transform.localScale.x / num * (float)Screen.width / (float)Screen.height, base.transform.localScale.y, base.transform.localScale.z);
+```
+
+While this fixed the 3D sections of the game work fine, and fixed some menus/UI to scale correctly, the "options menu", scene select menu, and possibly other GUI still remain out of whack (very zoomed in).
+
+I'm not sure if there's some way to scale these particular GUI elements causing a problem. Perhaps by debugging those scenes and finding the cameras, the values could be overridden, but it would be a reasonable amount of work.
+
+
+For future reference, the following classes appear to reference the aspect ratio:
+
+- Game.CameraScaler (1.77...f)
+- Game.ScreenScaler (1.77...f) <- this is the one I modified
+- Game.ScreenScalerSafeArea (1.77...f)
+- FixAspectRatio(not sure if this is a unity function. Doesn't appear to be used) (1.77...f)
+- LauncherArgs (1920)
+- OptionMenuRaycaster (1920)
+
+
+
+I think the best way to fix this issue is to not try and fix it globally, but to force the 3D portions of the game to be in widescreen, while leaving the rest alone.
