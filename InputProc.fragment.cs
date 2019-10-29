@@ -22,7 +22,7 @@ class InputProc
     bool immediateGUIHidden;
     float rotX;
     float rotY;
-    bool fpsEnabled = false;
+    bool fpsEnabled;
 
     //Used to save/restore the clip settings of the GUI cameras
     Dictionary<Camera, CameraClipState> backupClipState;
@@ -35,6 +35,13 @@ class InputProc
     GameObject cube;
     CinemachineFreeLook customFreeLook;
     Vector3 camPosOverride;
+
+    private void SetTimescale(float newTimeScale) {
+        Time.timeScale = newTimeScale;
+        // Adjust fixed delta time according to timescale
+        // The fixed delta time will now be 0.02 frames per real-time second
+        Time.fixedDeltaTime = 0.02f * Time.timeScale;
+    }
 
     // Game.InputProc
     // Tip: Use the Unity Editor to prototype the GUI rather than trying to do it in-game
@@ -194,32 +201,35 @@ https://github.com/drojf/ai_somnium_fps_camera
             }
         }
 
-        // Use F2-4 for slowmo: F2 = normal, F3 = 10x slower, F4 = 100x slower
+        // Use F2-4 for slowmo: F2 = normal, F3 = 10x slower, F4 = toggle stop time
         // see https://docs.unity3d.com/ScriptReference/Time-timeScale.html)
         {
-            float newTimeScale = 0f;
-
             if (Input.GetKeyDown(KeyCode.F2))
             {
-                newTimeScale = 1f;
+                SetTimescale(1f);
+                foreach(RootNode rootNode in UnityEngine.Object.FindObjectsOfType<RootNode>())
+                {
+                    rootNode.UnPause();
+                }
             }
             else if(Input.GetKeyDown(KeyCode.F3))
             {
-                newTimeScale = 0.1f;
+                SetTimescale(.1f);
+                foreach(RootNode rootNode in UnityEngine.Object.FindObjectsOfType<RootNode>())
+                {
+                    rootNode.UnPause();
+                }
             }
             else if(Input.GetKeyDown(KeyCode.F4))
             {
-                newTimeScale = 0.01f;
-            }
-
-            if(newTimeScale != 0f)
-            {
-                Time.timeScale = newTimeScale;
-                // Adjust fixed delta time according to timescale
-                // The fixed delta time will now be 0.02 frames per real-time second
-                Time.fixedDeltaTime = 0.02f * Time.timeScale;
+                SetTimescale(0);
+                foreach(RootNode rootNode in UnityEngine.Object.FindObjectsOfType<RootNode>())
+                {
+                    rootNode.ModPause();
+                }
             }
         }
+
 
         if(this.fpsEnabled)
         {
