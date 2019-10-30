@@ -16,6 +16,8 @@ class InputProc
     struct CameraClipState {
         public float near;
         public float far;
+        public float fieldOfView;
+        public float focalLength;
     }
 
     bool custom_clip;
@@ -121,6 +123,8 @@ https://github.com/drojf/ai_somnium_fps_camera
                 {
                     kvp.Key.near = kvp.Value.near;
                     kvp.Key.far = kvp.Value.far;
+                    kvp.Key.fieldOfView = kvp.Value.fieldOfView;
+                    kvp.Key.focalLength = kvp.Value.focalLength;
                 }
                 backupClipState = null;
             }
@@ -130,15 +134,19 @@ https://github.com/drojf/ai_somnium_fps_camera
         {
             foreach (Camera camera in Camera.allCameras)
             {
-                // If a new camera is found, backup clip settings, then force clip plane to .1
+                // If a new camera is found, backup clip settings, then force clip plane to .1 and FOV to ~60 degrees
                 if(!backupClipState.ContainsKey(camera))
                 {
                     backupClipState[camera] = new CameraClipState() {
                         near = camera.near,
                         far = camera.far,
+                        fieldOfView = camera.fieldOfView,
+                        focalLength = camera.focalLength;
                     };
 
                     camera.near = .1f;
+                    camera.fieldOfView = 60f;
+                    camera.focalLength = 35f;
                 }
             }
         }
