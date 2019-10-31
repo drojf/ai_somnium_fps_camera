@@ -82,29 +82,45 @@ Mouse Rotation - Rotate the camera (while in FPS mode)
 Screenshot Controls:
 F11 - Toggle this window
 F10 - Toggle Game GUI
-Scroll Wheel - Adjust Camera Zoom and Enable near clip mode (get closer without clipping)
-Scroll Wheel Click - Set zoom to middle value
-F7 - Disable Camera Zoom and Clip distance override
+K or F7 - Toggle (Camera Zoom and Near Clip mode)
+Scroll Wheel - Adjust camera zoom level (must enable Camera Zoom first)
 
+NOTE: Camera Zoom is especially useful if the game decides to zoom in too much.
 
 Slow Motion/Pause Controls:
-O - Press the 'O' key to toggle Pause/Resume of the game
+O - Toggle Pause/Resume of the game
 F3 - 10x Slow Motion (note: doesn't always work)
+
 NOTE: in all pause/slowmo modes, you can move the camera freely
 
 Rarely Used Controls:
 F6 - Enable Noclip/FPS Mode with Magenta Box
 
+Press F10 & F11 to toggle the GUIs! (for taking screenshots)
 
 https://github.com/drojf/ai_somnium_fps_camera
 
-Press F10 & F11 to toggle the GUIs! (for taking screenshots)
 ----------------------------------------------------
 ");
-            GUILayout.Label($"Zoom/Fov Enabled: {backupClipState != null} (Use scrollwheel)");
+            GUILayout.Label($"Zoom/Fov: {(backupClipState == null ? "disabled" : "ENABLED")} (Press 'K' to toggle)");
             if(backupClipState != null)
             {
-                GUILayout.Label($"User Fov: {userFov}");
+                GUILayout.Label($"User Fov: {userFov} (Adjust with scroll wheel)");
+            }
+
+            if(fpsEnabled)
+            {
+                GUILayout.Label($"FPS Mode Enabled - Press 'F9' to disable");
+            }
+
+            if(backupGUICameraState != null)
+            {
+                GUILayout.Label($"GAME GUI IS HIDDEN - Press 'F10' to show");
+            }
+
+            if(isPaused)
+            {
+                GUILayout.Label($"GAME IS PAUSED - Press 'O' to unpause");
             }
 
             GUILayout.EndArea ();
