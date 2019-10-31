@@ -136,15 +136,27 @@ Press F10 & F11 to toggle the GUIs! (for taking screenshots)
         if(backupClipState == null)
         {
             // Enable custom fov/clip distance mode via F7 key or mouse wheel scroll
-            if(Input.mouseScrollDelta.y != 0f  || Input.GetKeyDown(KeyCode.Mouse2))
+            if(Input.GetKeyDown(KeyCode.F7)  || Input.GetKeyDown(KeyCode.K))
             {
+                userFov = 45f;
                 backupClipState = new Dictionary<Camera, CameraClipState>();
             }
         }
         else
         {
+            if(Input.mouseScrollDelta.y > 0f)
+            {
+                // Zoom in when scrolling up
+                userFov *= 0.9f;
+            }
+            else if(Input.mouseScrollDelta.y < 0f)
+            {
+                // Zoom out when scrolling down
+                userFov *= 1.1f;
+            }
+            
             // Disable custom fov/clip distance mode via F7 key
-            if(Input.GetKeyDown(KeyCode.F7))
+            if(Input.GetKeyDown(KeyCode.F7) || Input.GetKeyDown(KeyCode.K))
             {
                 // Restore clip settings
                 foreach(KeyValuePair<Camera, CameraClipState> kvp in backupClipState)
@@ -154,24 +166,6 @@ Press F10 & F11 to toggle the GUIs! (for taking screenshots)
                     kvp.Key.fieldOfView = kvp.Value.fieldOfView;
                 }
                 backupClipState = null;
-            }
-            else
-            {
-                if(Input.mouseScrollDelta.y > 0f)
-                {
-                    // Zoom in when scrolling up
-                    userFov *= 0.9f;
-                }
-                else if(Input.mouseScrollDelta.y < 0f)
-                {
-                    // Zoom out when scrolling down
-                    userFov *= 1.1f;
-                }
-
-                if(Input.GetKeyDown(KeyCode.Mouse2))
-                {
-                    userFov = 45f;
-                }
             }
         }
 
