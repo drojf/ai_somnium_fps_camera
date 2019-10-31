@@ -17,7 +17,6 @@ class InputProc
         public float near;
         public float far;
         public float fieldOfView;
-        public float focalLength;
     }
 
     bool custom_clip;
@@ -25,6 +24,7 @@ class InputProc
     float rotX;
     float rotY;
     bool fpsEnabled;
+    float userFov;
 
     //Used to save/restore the clip settings of the GUI cameras
     Dictionary<Camera, CameraClipState> backupClipState;
@@ -110,8 +110,26 @@ https://github.com/drojf/ai_somnium_fps_camera
     // Game.InputProc
     private void LateUpdate()
     {
+        if(userFov == 0f)
+        {
+            userFov = 45f;
+        }
+
+        if(Input.mouseScrollDelta.y > 0f)
+        {
+            userFov *= 1.1f;
+        }
+        else if(Input.mouseScrollDelta.y < 0f)
+        {
+            userFov *= .9f;
+        }
+
+        // Prevent fov getting too small or too large
+        userFov = Mathf.Clamp(userFov, 1f, 180f);
+
         if(Input.GetKeyDown(KeyCode.F7))
         {
+            userFov = 45f;
             if(backupClipState == null)
             {
                 backupClipState = new Dictionary<Camera, CameraClipState>();
@@ -124,7 +142,6 @@ https://github.com/drojf/ai_somnium_fps_camera
                     kvp.Key.near = kvp.Value.near;
                     kvp.Key.far = kvp.Value.far;
                     kvp.Key.fieldOfView = kvp.Value.fieldOfView;
-                    kvp.Key.focalLength = kvp.Value.focalLength;
                 }
                 backupClipState = null;
             }
@@ -134,20 +151,18 @@ https://github.com/drojf/ai_somnium_fps_camera
         {
             foreach (Camera camera in Camera.allCameras)
             {
-                // If a new camera is found, backup clip settings, then force clip plane to .1 and FOV to ~60 degrees
+                // If a new camera is found, backup clip settings, then force clip plane to .1 and FOV to 60 degrees
                 if(!backupClipState.ContainsKey(camera))
                 {
                     backupClipState[camera] = new CameraClipState() {
                         near = camera.near,
                         far = camera.far,
                         fieldOfView = camera.fieldOfView,
-                        focalLength = camera.focalLength;
                     };
-
-                    camera.near = .1f;
-                    camera.fieldOfView = 60f;
-                    camera.focalLength = 35f;
                 }
+                
+                camera.near = .1f;
+                camera.fieldOfView = userFov;
             }
         }
 
