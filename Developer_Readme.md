@@ -11,6 +11,10 @@ BIG NOTE: After editing the file multiple times with DnSpy (mainly if you use "e
 - Open the `Assembly-CSharp.dll` with dnspy, **while it's in the same folder as all the other DLLs**. If it's not in the same folder as the other DLLS, dnspy won't be able to find them.
 - Expand the `Assembly-CSharp.dll` arrow
 - Expand the `Game` arrow
+- Navigate to the `RootNode` class
+- Right click the class and click "add class members"
+  - merge the code located in the `RootNode.fragment.cs` file of this github repository
+- **SAVE THE MODULE**. If you don't save the module, when you modify the next part it won't detect the changes
 - Navigate to the `InputProc` class
 - Right click the class and click "add class members"
   - merge the code located in the `InputProc.fragment.cs` file of this github repository
@@ -80,114 +84,6 @@ Camera list in ADV mode:
 - RightCamera
 - Camera01 (Cinematic camera?)
 
-### GUI "Graphic" list
-
-There are multiple graphics named "image" - these seem to be used as render targets.
-One is used to render the main 3D display
-One might be used for the AIBall display.
-I wanted to selectively enable the AIBall display, but since it has the same name it's difficult to pick out.
-The "Mask" graphic may also have something to do with the AIBall display
-
-Boss's room example:
-
-- array	{UnityEngine.UI.Graphic[0x00000060]}	UnityEngine.Object[] {UnityEngine.UI.Graphic[]}
-- [0]	{TutorialWindow (Game.NonDrawingGraphic)}	UnityEngine.UI.Graphic {Game.NonDrawingGraphic}
-- [1]	{Image3b (UnityEngine.UI.Image)}	UnityEngine.UI.Graphic {UnityEngine.UI.Image}
-- [2]	{Image2 (UnityEngine.UI.Image)}	UnityEngine.UI.Graphic {UnityEngine.UI.Image}
-- [3]	{IconText (UnityEngine.UI.RawImage)}	UnityEngine.UI.Graphic {UnityEngine.UI.RawImage}
-- [4]	{Image01 (UnityEngine.UI.Image)}	UnityEngine.UI.Graphic {UnityEngine.UI.Image}
-- [5]	{Prompt (UnityEngine.UI.Image)}	UnityEngine.UI.Graphic {UnityEngine.UI.Image}
-- [6]	{Text (TMPro.TextMeshProUGUI)}	UnityEngine.UI.Graphic {TMPro.TextMeshProUGUI}
-- [7]	{Image_R (UnityEngine.UI.Image)}	UnityEngine.UI.Graphic {UnityEngine.UI.Image}
-- [8]	{TutorialWindow (Game.NonDrawingGraphic)}	UnityEngine.UI.Graphic {Game.NonDrawingGraphic}
-- [9]	{TutorialWindow (Game.NonDrawingGraphic)}	UnityEngine.UI.Graphic {Game.NonDrawingGraphic}
-- [10]	{TutorialWindow (Game.NonDrawingGraphic)}	UnityEngine.UI.Graphic {Game.NonDrawingGraphic}
-- [11]	{TutorialWindow (Game.NonDrawingGraphic)}	UnityEngine.UI.Graphic {Game.NonDrawingGraphic}
-- [12]	{Image4 (UnityEngine.UI.Image)}	UnityEngine.UI.Graphic {UnityEngine.UI.Image}
-- [13]	{Image1 (UnityEngine.UI.Image)}	UnityEngine.UI.Graphic {UnityEngine.UI.Image}
-- [14]	{Image5 (UnityEngine.UI.Image)}	UnityEngine.UI.Graphic {UnityEngine.UI.Image}
-- [15]	{Image3c (UnityEngine.UI.Image)}	UnityEngine.UI.Graphic {UnityEngine.UI.Image}
-- [16]	{Text (TMPro.TextMeshProUGUI)}	UnityEngine.UI.Graphic {TMPro.TextMeshProUGUI}
-- [17]	{Button (UnityEngine.UI.Image)}	UnityEngine.UI.Graphic {UnityEngine.UI.Image}
-- [18]	{Image (UnityEngine.UI.Image)}	UnityEngine.UI.Graphic {UnityEngine.UI.Image}
-- [19]	{Image (UnityEngine.UI.Image)}	UnityEngine.UI.Graphic {UnityEngine.UI.Image}
-- [20]	{Text (TMPro.TextMeshProUGUI)}	UnityEngine.UI.Graphic {TMPro.TextMeshProUGUI}
-- [21]	{Folder (UnityEngine.UI.Image)}	UnityEngine.UI.Graphic {UnityEngine.UI.Image}
-- [22]	{Base (Game.NonDrawingGraphic)}	UnityEngine.UI.Graphic {Game.NonDrawingGraphic}
-- [23]	{Image3 (UnityEngine.UI.Image)}	UnityEngine.UI.Graphic {UnityEngine.UI.Image}
-- [24]	{Button_02 (UnityEngine.UI.Image)}	UnityEngine.UI.Graphic {UnityEngine.UI.Image}
-- [25]	{FilterBlur (UnityEngine.UI.Image)}	UnityEngine.UI.Graphic {UnityEngine.UI.Image}
-- [26]	{Background (UnityEngine.UI.Image)}	UnityEngine.UI.Graphic {UnityEngine.UI.Image}
-- [27]	{BG01 (UnityEngine.UI.Image)}	UnityEngine.UI.Graphic {UnityEngine.UI.Image}
-- [28]	{Filter (UnityEngine.UI.Image)}	UnityEngine.UI.Graphic {UnityEngine.UI.Image}
-- [29]	{Mask (UnityEngine.UI.Image)}	UnityEngine.UI.Graphic {UnityEngine.UI.Image}
-- [30]	{Image2D (UnityEngine.UI.RawImage)}	UnityEngine.UI.Graphic {UnityEngine.UI.RawImage}
-- [31]	{LeftFilter (UnityEngine.UI.Image)}	UnityEngine.UI.Graphic {UnityEngine.UI.Image}
-- [32]	{Image (UnityEngine.UI.RawImage)}	UnityEngine.UI.Graphic {UnityEngine.UI.RawImage}
-- [33]	{Image04 (UnityEngine.UI.Image)}	UnityEngine.UI.Graphic {UnityEngine.UI.Image}
-- [34]	{Image (UnityEngine.UI.RawImage)}	UnityEngine.UI.Graphic {UnityEngine.UI.RawImage}
-- [35]	{ScreenScaler (Game.NonDrawingGraphic)}	UnityEngine.UI.Graphic {Game.NonDrawingGraphic}
-- [36]	{Image (UnityEngine.UI.Image)}	UnityEngine.UI.Graphic {UnityEngine.UI.Image}
-- [37]	{Outline_back (UnityEngine.UI.Image)}	UnityEngine.UI.Graphic {UnityEngine.UI.Image}
-- [38]	{Normal (UnityEngine.UI.RawImage)}	UnityEngine.UI.Graphic {UnityEngine.UI.RawImage}
-- [39]	{FilterTop (UnityEngine.UI.Image)}	UnityEngine.UI.Graphic {UnityEngine.UI.Image}
-- [40]	{Text (TMPro.TextMeshProUGUI)}	UnityEngine.UI.Graphic {TMPro.TextMeshProUGUI}
-- [41]	{[Normal] (UnityEngine.UI.Image)}	UnityEngine.UI.Graphic {UnityEngine.UI.Image}
-- [42]	{Frame (UnityEngine.UI.Image)}	UnityEngine.UI.Graphic {UnityEngine.UI.Image}
-- [43]	{Image00 (UnityEngine.UI.Image)}	UnityEngine.UI.Graphic {UnityEngine.UI.Image}
-- [44]	{Button_03 (UnityEngine.UI.Image)}	UnityEngine.UI.Graphic {UnityEngine.UI.Image}
-- [45]	{Image2D (UnityEngine.UI.RawImage)}	UnityEngine.UI.Graphic {UnityEngine.UI.RawImage}
-- [46]	{Image (UnityEngine.UI.RawImage)}	UnityEngine.UI.Graphic {UnityEngine.UI.RawImage}
-- [47]	{Mask (UnityEngine.UI.Image)}	UnityEngine.UI.Graphic {UnityEngine.UI.Image}
-- [48]	{Button_01 (UnityEngine.UI.Image)}	UnityEngine.UI.Graphic {UnityEngine.UI.Image}
-- [49]	{ui_main_infoW02_hit_add (UnityEngine.UI.Image)}	UnityEngine.UI.Graphic {UnityEngine.UI.Image}
-- [50]	{ui_main_infoW01_add (UnityEngine.UI.Image)}	UnityEngine.UI.Graphic {UnityEngine.UI.Image}
-- [51]	{button_icon (UnityEngine.UI.Image)}	UnityEngine.UI.Graphic {UnityEngine.UI.Image}
-- [52]	{image (UnityEngine.UI.Image)}	UnityEngine.UI.Graphic {UnityEngine.UI.Image}
-- [53]	{image_rest2 (UnityEngine.UI.Image)}	UnityEngine.UI.Graphic {UnityEngine.UI.Image}
-- [54]	{image_rest3 (UnityEngine.UI.Image)}	UnityEngine.UI.Graphic {UnityEngine.UI.Image}
-- [55]	{Base (Game.NonDrawingGraphic)}	UnityEngine.UI.Graphic {Game.NonDrawingGraphic}
-- [56]	{Mask (Game.NonDrawingGraphic)}	UnityEngine.UI.Graphic {Game.NonDrawingGraphic}
-- [57]	{ui_main_infoW02_hit_add (UnityEngine.UI.Image)}	UnityEngine.UI.Graphic {UnityEngine.UI.Image}
-- [58]	{ui_main_infoW01_add (UnityEngine.UI.Image)}	UnityEngine.UI.Graphic {UnityEngine.UI.Image}
-- [59]	{button_icon (UnityEngine.UI.Image)}	UnityEngine.UI.Graphic {UnityEngine.UI.Image}
-- [60]	{image (UnityEngine.UI.Image)}	UnityEngine.UI.Graphic {UnityEngine.UI.Image}
-- [61]	{Base (Game.NonDrawingGraphic)}	UnityEngine.UI.Graphic {Game.NonDrawingGraphic}
-- [62]	{ui_main_infoW02_hit_add (UnityEngine.UI.Image)}	UnityEngine.UI.Graphic {UnityEngine.UI.Image}
-- [63]	{ui_main_infoW01_add (UnityEngine.UI.Image)}	UnityEngine.UI.Graphic {UnityEngine.UI.Image}
-- [64]	{button_icon (UnityEngine.UI.Image)}	UnityEngine.UI.Graphic {UnityEngine.UI.Image}
-- [65]	{image (UnityEngine.UI.Image)}	UnityEngine.UI.Graphic {UnityEngine.UI.Image}
-- [66]	{Base (Game.NonDrawingGraphic)}	UnityEngine.UI.Graphic {Game.NonDrawingGraphic}
-- [67]	{Mask (Game.NonDrawingGraphic)}	UnityEngine.UI.Graphic {Game.NonDrawingGraphic}
-- [68]	{ui_main_infoW02_hit_add (UnityEngine.UI.Image)}	UnityEngine.UI.Graphic {UnityEngine.UI.Image}
-- [69]	{ui_main_infoW01_add (UnityEngine.UI.Image)}	UnityEngine.UI.Graphic {UnityEngine.UI.Image}
-- [70]	{button_icon (UnityEngine.UI.Image)}	UnityEngine.UI.Graphic {UnityEngine.UI.Image}
-- [71]	{image (UnityEngine.UI.Image)}	UnityEngine.UI.Graphic {UnityEngine.UI.Image}
-- [72]	{Base (Game.NonDrawingGraphic)}	UnityEngine.UI.Graphic {Game.NonDrawingGraphic}
-- [73]	{Mask (Game.NonDrawingGraphic)}	UnityEngine.UI.Graphic {Game.NonDrawingGraphic}
-- [74]	{LoopHit_01 (UnityEngine.UI.Image)}	UnityEngine.UI.Graphic {UnityEngine.UI.Image}
-- [75]	{ColorHit_01 (UnityEngine.UI.Image)}	UnityEngine.UI.Graphic {UnityEngine.UI.Image}
-- [76]	{ui_main_infoW02_hit_add (UnityEngine.UI.Image)}	UnityEngine.UI.Graphic {UnityEngine.UI.Image}
-- [77]	{ui_main_infoW01_add (UnityEngine.UI.Image)}	UnityEngine.UI.Graphic {UnityEngine.UI.Image}
-- [78]	{button_icon (UnityEngine.UI.Image)}	UnityEngine.UI.Graphic {UnityEngine.UI.Image}
-- [79]	{image (UnityEngine.UI.Image)}	UnityEngine.UI.Graphic {UnityEngine.UI.Image}
-- [80]	{Base (Game.NonDrawingGraphic)}	UnityEngine.UI.Graphic {Game.NonDrawingGraphic}
-- [81]	{Mask (Game.NonDrawingGraphic)}	UnityEngine.UI.Graphic {Game.NonDrawingGraphic}
-- [82]	{ui_main_infoW02_hit_add (UnityEngine.UI.Image)}	UnityEngine.UI.Graphic {UnityEngine.UI.Image}
-- [83]	{ui_main_infoW01_add (UnityEngine.UI.Image)}	UnityEngine.UI.Graphic {UnityEngine.UI.Image}
-- [84]	{button_icon (UnityEngine.UI.Image)}	UnityEngine.UI.Graphic {UnityEngine.UI.Image}
-- [85]	{image (UnityEngine.UI.Image)}	UnityEngine.UI.Graphic {UnityEngine.UI.Image}
-- [86]	{Base (Game.NonDrawingGraphic)}	UnityEngine.UI.Graphic {Game.NonDrawingGraphic}
-- [87]	{Mask (Game.NonDrawingGraphic)}	UnityEngine.UI.Graphic {Game.NonDrawingGraphic}
-- [88]	{ui_main_infoW02_hit_add (UnityEngine.UI.Image)}	UnityEngine.UI.Graphic {UnityEngine.UI.Image}
-- [89]	{ui_main_infoW01_add (UnityEngine.UI.Image)}	UnityEngine.UI.Graphic {UnityEngine.UI.Image}
-- [90]	{button_icon (UnityEngine.UI.Image)}	UnityEngine.UI.Graphic {UnityEngine.UI.Image}
-- [91]	{image (UnityEngine.UI.Image)}	UnityEngine.UI.Graphic {UnityEngine.UI.Image}
-- [92]	{Base (Game.NonDrawingGraphic)}	UnityEngine.UI.Graphic {Game.NonDrawingGraphic}
-- [93]	{Mask (Game.NonDrawingGraphic)}	UnityEngine.UI.Graphic {Game.NonDrawingGraphic}
-- [94]	{BaseImage (UnityEngine.UI.Image)}	UnityEngine.UI.Graphic {UnityEngine.UI.Image}
-- [95]	{EffectBase (UnityEngine.UI.Image)}	UnityEngine.UI.Graphic {UnityEngine.UI.Image}
-
 
 ### Class info
 
@@ -216,7 +112,7 @@ The game has a `Launcher.exe` which calls `AI_TheSomniumFiles.exe` depending on 
 
 I attempted to change the resolution to widescreen using the above command line arguments. (eg in the above, set `width=2000 height=800`)
 
-If you do this, everything will be set to a 16:9 ratio, and also some GUI will be extremely large.
+If you do this, everything will still be in a 16:9 ratio (letterboxed), and also some GUI will be extremely large.
 
 I then attempted to force the game to the correct ratio by editing the `Game.ScreenScaler` classes `Update()` function. (found by searching `1920` literal in Dnspy (remember to change the search method or you'll get nothing))
 
@@ -234,7 +130,6 @@ While this fixed the 3D sections of the game work fine, and fixed some menus/UI 
 
 I'm not sure if there's some way to scale these particular GUI elements causing a problem. Perhaps by debugging those scenes and finding the cameras, the values could be overridden, but it would be a reasonable amount of work.
 
-
 For future reference, the following classes appear to reference the aspect ratio:
 
 - Game.CameraScaler (1.77...f)
@@ -244,6 +139,136 @@ For future reference, the following classes appear to reference the aspect ratio
 - LauncherArgs (1920)
 - OptionMenuRaycaster (1920)
 
+## Game Script Details
 
+The game script uses Lua (specifically, lua-5.1, 64 bit). The lua scripts are pre-compiled into byte code, obfuscated, then saved in the bundle at `AI The Somnium Files\AI_TheSomniumFiles_Data\StreamingAssets\AssetBundles\StandaloneWindows64\luabytecode`.
 
-I think the best way to fix this issue is to not try and fix it globally, but to force the 3D portions of the game to be in widescreen, while leaving the rest alone.
+The files are de-obfuscated in the `Game.ScriptManager.LoaderDelegate()` function (please keep this `ScriptManager` class in mind as it's responsible for various script related things).
+
+You can view the bytecode of the scripts by getting the correct version of the lua binaries (I used lua-5.1.5 **64 bit**) and running `luac -l -l script_name` (yes, use -l twice.).
+
+The scripts are probably not hand written, and instead generated by the library they used, Slua, which you can see here: https://github.com/pangweiwei/slua
+
+## Text Display
+
+The `TextController` class is responsible for displaying glyphs on the screen (but not the actual textbox).
+
+## Game's Pausing function
+
+When I called the game's pausing function, it initally didn't resume (screen would go back). I modified it to not disable any GameObjects, which seemed to make pausing work, except for the eye movement/blinking as below.
+
+The pausing function generally iterates over various types of objects and calls disable/pause on them.
+
+Compare the `RootNode.ModPause` to the `RootNode.Pause` to see more detail.
+
+## Eye Movement and Blinking
+
+The `EyeMove` and `EyeController` classes appear to be responsible for eye rotation and blinking. When I called my modified pause function, it caused the eyes to point in wierd directions, and any issued blinks to close eyes permanently and not reopen. Causing the pause function to disable just these two classes seemed to fix the issue.
+
+### GUI "Graphic" list
+
+There are multiple graphics named "image" - these seem to be used as render targets.
+One is used to render the main 3D display
+One might be used for the AIBall display.
+I wanted to selectively enable the AIBall display, but since it has the same name it's difficult to pick out.
+The "Mask" graphic may also have something to do with the AIBall display
+
+Boss's room example:
+
+- array    {UnityEngine.UI.Graphic[0x00000060]}    UnityEngine.Object[] {UnityEngine.UI.Graphic[]}
+- [0]    {TutorialWindow (Game.NonDrawingGraphic)}    UnityEngine.UI.Graphic {Game.NonDrawingGraphic}
+- [1]    {Image3b (UnityEngine.UI.Image)}    UnityEngine.UI.Graphic {UnityEngine.UI.Image}
+- [2]    {Image2 (UnityEngine.UI.Image)}    UnityEngine.UI.Graphic {UnityEngine.UI.Image}
+- [3]    {IconText (UnityEngine.UI.RawImage)}    UnityEngine.UI.Graphic {UnityEngine.UI.RawImage}
+- [4]    {Image01 (UnityEngine.UI.Image)}    UnityEngine.UI.Graphic {UnityEngine.UI.Image}
+- [5]    {Prompt (UnityEngine.UI.Image)}    UnityEngine.UI.Graphic {UnityEngine.UI.Image}
+- [6]    {Text (TMPro.TextMeshProUGUI)}    UnityEngine.UI.Graphic {TMPro.TextMeshProUGUI}
+- [7]    {Image_R (UnityEngine.UI.Image)}    UnityEngine.UI.Graphic {UnityEngine.UI.Image}
+- [8]    {TutorialWindow (Game.NonDrawingGraphic)}    UnityEngine.UI.Graphic {Game.NonDrawingGraphic}
+- [9]    {TutorialWindow (Game.NonDrawingGraphic)}    UnityEngine.UI.Graphic {Game.NonDrawingGraphic}
+- [10]    {TutorialWindow (Game.NonDrawingGraphic)}    UnityEngine.UI.Graphic {Game.NonDrawingGraphic}
+- [11]    {TutorialWindow (Game.NonDrawingGraphic)}    UnityEngine.UI.Graphic {Game.NonDrawingGraphic}
+- [12]    {Image4 (UnityEngine.UI.Image)}    UnityEngine.UI.Graphic {UnityEngine.UI.Image}
+- [13]    {Image1 (UnityEngine.UI.Image)}    UnityEngine.UI.Graphic {UnityEngine.UI.Image}
+- [14]    {Image5 (UnityEngine.UI.Image)}    UnityEngine.UI.Graphic {UnityEngine.UI.Image}
+- [15]    {Image3c (UnityEngine.UI.Image)}    UnityEngine.UI.Graphic {UnityEngine.UI.Image}
+- [16]    {Text (TMPro.TextMeshProUGUI)}    UnityEngine.UI.Graphic {TMPro.TextMeshProUGUI}
+- [17]    {Button (UnityEngine.UI.Image)}    UnityEngine.UI.Graphic {UnityEngine.UI.Image}
+- [18]    {Image (UnityEngine.UI.Image)}    UnityEngine.UI.Graphic {UnityEngine.UI.Image}
+- [19]    {Image (UnityEngine.UI.Image)}    UnityEngine.UI.Graphic {UnityEngine.UI.Image}
+- [20]    {Text (TMPro.TextMeshProUGUI)}    UnityEngine.UI.Graphic {TMPro.TextMeshProUGUI}
+- [21]    {Folder (UnityEngine.UI.Image)}    UnityEngine.UI.Graphic {UnityEngine.UI.Image}
+- [22]    {Base (Game.NonDrawingGraphic)}    UnityEngine.UI.Graphic {Game.NonDrawingGraphic}
+- [23]    {Image3 (UnityEngine.UI.Image)}    UnityEngine.UI.Graphic {UnityEngine.UI.Image}
+- [24]    {Button_02 (UnityEngine.UI.Image)}    UnityEngine.UI.Graphic {UnityEngine.UI.Image}
+- [25]    {FilterBlur (UnityEngine.UI.Image)}    UnityEngine.UI.Graphic {UnityEngine.UI.Image}
+- [26]    {Background (UnityEngine.UI.Image)}    UnityEngine.UI.Graphic {UnityEngine.UI.Image}
+- [27]    {BG01 (UnityEngine.UI.Image)}    UnityEngine.UI.Graphic {UnityEngine.UI.Image}
+- [28]    {Filter (UnityEngine.UI.Image)}    UnityEngine.UI.Graphic {UnityEngine.UI.Image}
+- [29]    {Mask (UnityEngine.UI.Image)}    UnityEngine.UI.Graphic {UnityEngine.UI.Image}
+- [30]    {Image2D (UnityEngine.UI.RawImage)}    UnityEngine.UI.Graphic {UnityEngine.UI.RawImage}
+- [31]    {LeftFilter (UnityEngine.UI.Image)}    UnityEngine.UI.Graphic {UnityEngine.UI.Image}
+- [32]    {Image (UnityEngine.UI.RawImage)}    UnityEngine.UI.Graphic {UnityEngine.UI.RawImage}
+- [33]    {Image04 (UnityEngine.UI.Image)}    UnityEngine.UI.Graphic {UnityEngine.UI.Image}
+- [34]    {Image (UnityEngine.UI.RawImage)}    UnityEngine.UI.Graphic {UnityEngine.UI.RawImage}
+- [35]    {ScreenScaler (Game.NonDrawingGraphic)}    UnityEngine.UI.Graphic {Game.NonDrawingGraphic}
+- [36]    {Image (UnityEngine.UI.Image)}    UnityEngine.UI.Graphic {UnityEngine.UI.Image}
+- [37]    {Outline_back (UnityEngine.UI.Image)}    UnityEngine.UI.Graphic {UnityEngine.UI.Image}
+- [38]    {Normal (UnityEngine.UI.RawImage)}    UnityEngine.UI.Graphic {UnityEngine.UI.RawImage}
+- [39]    {FilterTop (UnityEngine.UI.Image)}    UnityEngine.UI.Graphic {UnityEngine.UI.Image}
+- [40]    {Text (TMPro.TextMeshProUGUI)}    UnityEngine.UI.Graphic {TMPro.TextMeshProUGUI}
+- [41]    {[Normal] (UnityEngine.UI.Image)}    UnityEngine.UI.Graphic {UnityEngine.UI.Image}
+- [42]    {Frame (UnityEngine.UI.Image)}    UnityEngine.UI.Graphic {UnityEngine.UI.Image}
+- [43]    {Image00 (UnityEngine.UI.Image)}    UnityEngine.UI.Graphic {UnityEngine.UI.Image}
+- [44]    {Button_03 (UnityEngine.UI.Image)}    UnityEngine.UI.Graphic {UnityEngine.UI.Image}
+- [45]    {Image2D (UnityEngine.UI.RawImage)}    UnityEngine.UI.Graphic {UnityEngine.UI.RawImage}
+- [46]    {Image (UnityEngine.UI.RawImage)}    UnityEngine.UI.Graphic {UnityEngine.UI.RawImage}
+- [47]    {Mask (UnityEngine.UI.Image)}    UnityEngine.UI.Graphic {UnityEngine.UI.Image}
+- [48]    {Button_01 (UnityEngine.UI.Image)}    UnityEngine.UI.Graphic {UnityEngine.UI.Image}
+- [49]    {ui_main_infoW02_hit_add (UnityEngine.UI.Image)}    UnityEngine.UI.Graphic {UnityEngine.UI.Image}
+- [50]    {ui_main_infoW01_add (UnityEngine.UI.Image)}    UnityEngine.UI.Graphic {UnityEngine.UI.Image}
+- [51]    {button_icon (UnityEngine.UI.Image)}    UnityEngine.UI.Graphic {UnityEngine.UI.Image}
+- [52]    {image (UnityEngine.UI.Image)}    UnityEngine.UI.Graphic {UnityEngine.UI.Image}
+- [53]    {image_rest2 (UnityEngine.UI.Image)}    UnityEngine.UI.Graphic {UnityEngine.UI.Image}
+- [54]    {image_rest3 (UnityEngine.UI.Image)}    UnityEngine.UI.Graphic {UnityEngine.UI.Image}
+- [55]    {Base (Game.NonDrawingGraphic)}    UnityEngine.UI.Graphic {Game.NonDrawingGraphic}
+- [56]    {Mask (Game.NonDrawingGraphic)}    UnityEngine.UI.Graphic {Game.NonDrawingGraphic}
+- [57]    {ui_main_infoW02_hit_add (UnityEngine.UI.Image)}    UnityEngine.UI.Graphic {UnityEngine.UI.Image}
+- [58]    {ui_main_infoW01_add (UnityEngine.UI.Image)}    UnityEngine.UI.Graphic {UnityEngine.UI.Image}
+- [59]    {button_icon (UnityEngine.UI.Image)}    UnityEngine.UI.Graphic {UnityEngine.UI.Image}
+- [60]    {image (UnityEngine.UI.Image)}    UnityEngine.UI.Graphic {UnityEngine.UI.Image}
+- [61]    {Base (Game.NonDrawingGraphic)}    UnityEngine.UI.Graphic {Game.NonDrawingGraphic}
+- [62]    {ui_main_infoW02_hit_add (UnityEngine.UI.Image)}    UnityEngine.UI.Graphic {UnityEngine.UI.Image}
+- [63]    {ui_main_infoW01_add (UnityEngine.UI.Image)}    UnityEngine.UI.Graphic {UnityEngine.UI.Image}
+- [64]    {button_icon (UnityEngine.UI.Image)}    UnityEngine.UI.Graphic {UnityEngine.UI.Image}
+- [65]    {image (UnityEngine.UI.Image)}    UnityEngine.UI.Graphic {UnityEngine.UI.Image}
+- [66]    {Base (Game.NonDrawingGraphic)}    UnityEngine.UI.Graphic {Game.NonDrawingGraphic}
+- [67]    {Mask (Game.NonDrawingGraphic)}    UnityEngine.UI.Graphic {Game.NonDrawingGraphic}
+- [68]    {ui_main_infoW02_hit_add (UnityEngine.UI.Image)}    UnityEngine.UI.Graphic {UnityEngine.UI.Image}
+- [69]    {ui_main_infoW01_add (UnityEngine.UI.Image)}    UnityEngine.UI.Graphic {UnityEngine.UI.Image}
+- [70]    {button_icon (UnityEngine.UI.Image)}    UnityEngine.UI.Graphic {UnityEngine.UI.Image}
+- [71]    {image (UnityEngine.UI.Image)}    UnityEngine.UI.Graphic {UnityEngine.UI.Image}
+- [72]    {Base (Game.NonDrawingGraphic)}    UnityEngine.UI.Graphic {Game.NonDrawingGraphic}
+- [73]    {Mask (Game.NonDrawingGraphic)}    UnityEngine.UI.Graphic {Game.NonDrawingGraphic}
+- [74]    {LoopHit_01 (UnityEngine.UI.Image)}    UnityEngine.UI.Graphic {UnityEngine.UI.Image}
+- [75]    {ColorHit_01 (UnityEngine.UI.Image)}    UnityEngine.UI.Graphic {UnityEngine.UI.Image}
+- [76]    {ui_main_infoW02_hit_add (UnityEngine.UI.Image)}    UnityEngine.UI.Graphic {UnityEngine.UI.Image}
+- [77]    {ui_main_infoW01_add (UnityEngine.UI.Image)}    UnityEngine.UI.Graphic {UnityEngine.UI.Image}
+- [78]    {button_icon (UnityEngine.UI.Image)}    UnityEngine.UI.Graphic {UnityEngine.UI.Image}
+- [79]    {image (UnityEngine.UI.Image)}    UnityEngine.UI.Graphic {UnityEngine.UI.Image}
+- [80]    {Base (Game.NonDrawingGraphic)}    UnityEngine.UI.Graphic {Game.NonDrawingGraphic}
+- [81]    {Mask (Game.NonDrawingGraphic)}    UnityEngine.UI.Graphic {Game.NonDrawingGraphic}
+- [82]    {ui_main_infoW02_hit_add (UnityEngine.UI.Image)}    UnityEngine.UI.Graphic {UnityEngine.UI.Image}
+- [83]    {ui_main_infoW01_add (UnityEngine.UI.Image)}    UnityEngine.UI.Graphic {UnityEngine.UI.Image}
+- [84]    {button_icon (UnityEngine.UI.Image)}    UnityEngine.UI.Graphic {UnityEngine.UI.Image}
+- [85]    {image (UnityEngine.UI.Image)}    UnityEngine.UI.Graphic {UnityEngine.UI.Image}
+- [86]    {Base (Game.NonDrawingGraphic)}    UnityEngine.UI.Graphic {Game.NonDrawingGraphic}
+- [87]    {Mask (Game.NonDrawingGraphic)}    UnityEngine.UI.Graphic {Game.NonDrawingGraphic}
+- [88]    {ui_main_infoW02_hit_add (UnityEngine.UI.Image)}    UnityEngine.UI.Graphic {UnityEngine.UI.Image}
+- [89]    {ui_main_infoW01_add (UnityEngine.UI.Image)}    UnityEngine.UI.Graphic {UnityEngine.UI.Image}
+- [90]    {button_icon (UnityEngine.UI.Image)}    UnityEngine.UI.Graphic {UnityEngine.UI.Image}
+- [91]    {image (UnityEngine.UI.Image)}    UnityEngine.UI.Graphic {UnityEngine.UI.Image}
+- [92]    {Base (Game.NonDrawingGraphic)}    UnityEngine.UI.Graphic {Game.NonDrawingGraphic}
+- [93]    {Mask (Game.NonDrawingGraphic)}    UnityEngine.UI.Graphic {Game.NonDrawingGraphic}
+- [94]    {BaseImage (UnityEngine.UI.Image)}    UnityEngine.UI.Graphic {UnityEngine.UI.Image}
+- [95]    {EffectBase (UnityEngine.UI.Image)}    UnityEngine.UI.Graphic {UnityEngine.UI.Image}
