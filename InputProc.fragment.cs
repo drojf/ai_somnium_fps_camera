@@ -79,12 +79,15 @@ SHIFT - Hold to move faster
 Mouse Rotation - Rotate the camera (while in FPS mode)
 
 Screenshot Controls:
-F11 - Toggle this window (for taking screenshots)
-F10 - Toggle Game GUI (for taking screenshots)
-F2 - Disable Slow Motion (revert to normal speed)
-F3 - 10x Slow Motion (for taking screenshots)
-F4 - 100x Slow Motion (almost freezes the game)
-F7 - Toggle clip distance (get closer without clipping)
+F11 - Toggle this window
+F10 - Toggle Game GUI
+F7 - Fix Camera Zoom and Clip distance (get closer without clipping)
+Scroll Wheel - Adjust Camera Zoom (when enabled with F7)
+
+Slow Motion/Pause Controls:
+F2 - Play at normal speed/Resume Game
+F3 - 10x Slow Motion (note: doesn't always work)
+F4 - Freeze/Pause the game entirely (resume with F2)
 
 Rarely Used Controls:
 F6 - Enable Noclip/FPS Mode with Magenta Box
@@ -93,6 +96,12 @@ Press F10 & F11 to toggle the GUIs! (for taking screenshots)
 
 https://github.com/drojf/ai_somnium_fps_camera
 ");
+            GUILayout.Label($"Custom Zoom/Fov Enabled: {backupClipState != null} (Press F7)");
+            if(backupClipState != null)
+            {
+                GUILayout.Label($"User Fov: {userFov}");
+            }
+
             GUILayout.EndArea ();
         }
     }
