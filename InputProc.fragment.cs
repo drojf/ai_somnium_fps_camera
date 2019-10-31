@@ -25,6 +25,7 @@ class InputProc
     float rotY;
     bool fpsEnabled;
     float userFov;
+    bool isPaused;
 
     //Used to save/restore the clip settings of the GUI cameras
     Dictionary<Camera, CameraClipState> backupClipState;
@@ -81,22 +82,26 @@ Mouse Rotation - Rotate the camera (while in FPS mode)
 Screenshot Controls:
 F11 - Toggle this window
 F10 - Toggle Game GUI
-F7 - Fix Camera Zoom and Clip distance (get closer without clipping)
-Scroll Wheel - Adjust Camera Zoom (when enabled with F7)
+Scroll Wheel - Adjust Camera Zoom and Enable near clip mode (get closer without clipping)
+Scroll Wheel Click - Set zoom to middle value
+F7 - Disable Camera Zoom and Clip distance override
+
 
 Slow Motion/Pause Controls:
-F2 - Play at normal speed/Resume Game
+O - Press the 'O' key to toggle Pause/Resume of the game
 F3 - 10x Slow Motion (note: doesn't always work)
-F4 - Freeze/Pause the game entirely (resume with F2)
+NOTE: in all pause/slowmo modes, you can move the camera freely
 
 Rarely Used Controls:
 F6 - Enable Noclip/FPS Mode with Magenta Box
 
-Press F10 & F11 to toggle the GUIs! (for taking screenshots)
 
 https://github.com/drojf/ai_somnium_fps_camera
+
+Press F10 & F11 to toggle the GUIs! (for taking screenshots)
+----------------------------------------------------
 ");
-            GUILayout.Label($"Custom Zoom/Fov Enabled: {backupClipState != null} (Press F7)");
+            GUILayout.Label($"Zoom/Fov Enabled: {backupClipState != null} (Use scrollwheel)");
             if(backupClipState != null)
             {
                 GUILayout.Label($"User Fov: {userFov}");
@@ -119,31 +124,27 @@ https://github.com/drojf/ai_somnium_fps_camera
     // Game.InputProc
     private void LateUpdate()
     {
+        // Set user fov to 45 if it's zero (would do in constructor but easier to just do here)
         if(userFov == 0f)
         {
             userFov = 45f;
         }
 
-        if(Input.mouseScrollDelta.y > 0f)
-        {
-            userFov *= 1.1f;
-        }
-        else if(Input.mouseScrollDelta.y < 0f)
-        {
-            userFov *= .9f;
-        }
-
         // Prevent fov getting too small or too large
         userFov = Mathf.Clamp(userFov, 1f, 180f);
 
-        if(Input.GetKeyDown(KeyCode.F7))
+        if(backupClipState == null)
         {
-            userFov = 45f;
-            if(backupClipState == null)
+            // Enable custom fov/clip distance mode via F7 key or mouse wheel scroll
+            if(Input.mouseScrollDelta.y != 0f  || Input.GetKeyDown(KeyCode.Mouse2))
             {
                 backupClipState = new Dictionary<Camera, CameraClipState>();
             }
-            else
+        }
+        else
+        {
+            // Disable custom fov/clip distance mode via F7 key
+            if(Input.GetKeyDown(KeyCode.F7))
             {
                 // Restore clip settings
                 foreach(KeyValuePair<Camera, CameraClipState> kvp in backupClipState)
@@ -153,6 +154,24 @@ https://github.com/drojf/ai_somnium_fps_camera
                     kvp.Key.fieldOfView = kvp.Value.fieldOfView;
                 }
                 backupClipState = null;
+            }
+            else
+            {
+                if(Input.mouseScrollDelta.y > 0f)
+                {
+                    // Zoom in when scrolling up
+                    userFov *= 0.9f;
+                }
+                else if(Input.mouseScrollDelta.y < 0f)
+                {
+                    // Zoom out when scrolling down
+                    userFov *= 1.1f;
+                }
+
+                if(Input.GetKeyDown(KeyCode.Mouse2))
+                {
+                    userFov = 45f;
+                }
             }
         }
 
@@ -233,31 +252,38 @@ https://github.com/drojf/ai_somnium_fps_camera
             }
         }
 
-        // Use F2-4 for slowmo: F2 = normal, F3 = 10x slower, F4 = toggle stop time
+        // Game slowdown, pause, and resume
         // see https://docs.unity3d.com/ScriptReference/Time-timeScale.html)
         {
-            if (Input.GetKeyDown(KeyCode.F2))
+            // Press "O" key to toggle pausing the game
+            if (Input.GetKeyDown(KeyCode.O))
             {
-                SetTimescale(1f);
-                foreach(RootNode rootNode in UnityEngine.Object.FindObjectsOfType<RootNode>())
+                if(isPaused)
                 {
-                    rootNode.UnPause();
+                    SetTimescale(1f);
+                    foreach(RootNode rootNode in UnityEngine.Object.FindObjectsOfType<RootNode>())
+                    {
+                        rootNode.UnPause();
+                    }
+                } 
+                else 
+                {
+                    SetTimescale(0);
+                    foreach(RootNode rootNode in UnityEngine.Object.FindObjectsOfType<RootNode>())
+                    {
+                        rootNode.ModPause();
+                    }
                 }
+                isPaused = !isPaused;
             }
-            else if(Input.GetKeyDown(KeyCode.F3))
+
+            // Press "F3" to slow time by 10x (only works in certain scenes)
+            if(Input.GetKeyDown(KeyCode.F3))
             {
                 SetTimescale(.1f);
                 foreach(RootNode rootNode in UnityEngine.Object.FindObjectsOfType<RootNode>())
                 {
                     rootNode.UnPause();
-                }
-            }
-            else if(Input.GetKeyDown(KeyCode.F4))
-            {
-                SetTimescale(0);
-                foreach(RootNode rootNode in UnityEngine.Object.FindObjectsOfType<RootNode>())
-                {
-                    rootNode.ModPause();
                 }
             }
         }
