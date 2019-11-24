@@ -4,6 +4,7 @@
 //Merge this line into existing includes
 using Cinemachine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 //Merge into existing InputProc class
 class InputProc
@@ -26,6 +27,9 @@ class InputProc
     bool fpsEnabled;
     float userFov;
     bool isPaused;
+    bool debugMenuActive;   //Set to true when Debug menu and debug info is being collected
+    bool danceMode;         //Set to true if F8 is pressed during dance mode
+    bool manualCameraOverrideIsActive; //Set to true if the debug menu buttons should be used to control camera override (instead of automatically)
 
     //Used to save/restore the clip settings of the GUI cameras
     Dictionary<Camera, CameraClipState> backupClipState;
@@ -35,6 +39,9 @@ class InputProc
     Dictionary<Camera, CameraBackupState> backupCameraPositions;
     //Used to save whether collision is enabled/disabled of each cinemachine collider (which is attached to a cinemachine camera)
     Dictionary<CinemachineCollider, bool> backupCollisionStates;
+    //Debug only - used to manually override cameras by name
+    Dictionary<string, bool> manualCameraOverrideActive;
+
     GameObject cube;
     CinemachineFreeLook customFreeLook;
     Vector3 camPosOverride;
@@ -121,6 +128,39 @@ https://github.com/drojf/ai_somnium_fps_camera
             if(isPaused)
             {
                 GUILayout.Label($"GAME IS PAUSED - Press 'O' to unpause");
+            }
+
+            // Draw the debug menu
+            debugMenuActive = GUILayout.Toggle(debugMenuActive, "Advanced Debug Tools", new GUILayoutOption[0]);
+            if(debugMenuActive)
+            {
+                if(manualCameraOverrideActive == null)
+                {
+                    manualCameraOverrideActive = new Dictionary<string, bool>();
+                }
+
+                // Display the scene name, and all the cameras in the current scene
+                GUILayout.Label($"Current Scene: [{SceneManager.GetActiveScene().name}]");
+                GUILayout.Label($"Cameras in scene:");
+
+                manualCameraOverrideIsActive = GUILayout.Toggle(manualCameraOverrideIsActive, $"Manual Override Enabled");
+
+                foreach (Camera camera in Camera.allCameras)
+                {
+                    string cameraIsOverridenString = "";
+                    if(backupCameraPositions != null && backupCameraPositions.ContainsKey(camera))
+                    {
+                        cameraIsOverridenString = " - Automatic Override Active";
+                    }
+
+                    // Create a toggle allowing you override the camera
+                    bool currentToggleValue = false;
+                    if(manualCameraOverrideActive.TryGetValue(camera.name, out bool value))
+                    {
+                        currentToggleValue = value;
+                    }
+                    manualCameraOverrideActive[camera.name] = GUILayout.Toggle(currentToggleValue, $"{camera.name}{cameraIsOverridenString}");
+                }
             }
 
             GUILayout.EndArea ();
@@ -310,8 +350,23 @@ https://github.com/drojf/ai_somnium_fps_camera
 
             foreach (Camera camera in Camera.allCameras)
             {
-                // Only move the right camera (used in ADV mode) and character camera (used in somniums)
-                if (cameraMightBeActiveCamera(camera) || camera.name == "Character Camera")
+                bool shouldOverrideCamera = false;
+                if(manualCameraOverrideIsActive && manualCameraOverrideActive.TryGetValue(camera.name, out bool value))
+                {
+                    shouldOverrideCamera = value;
+                }
+                else if(danceMode)
+                {
+                    // Dance mode is special - need to override the camera called "Camera"
+                    shouldOverrideCamera = camera.name == "Camera";
+                }
+                else
+                {
+                    // Only move the right camera (used in ADV mode) and character camera (used in somniums)
+                    shouldOverrideCamera = cameraMightBeActiveCamera(camera) || camera.name == "Character Camera";
+                }
+
+                if(shouldOverrideCamera)
                 {
                     camera.transform.eulerAngles = new Vector3(-this.rotY, this.rotX, 0f);
 
@@ -414,6 +469,9 @@ https://github.com/drojf/ai_somnium_fps_camera
                 this.fpsEnabled = true;
                 this.rotX = 0;
                 this.rotY = 0;
+
+                // Record if fps enabled during "Dance" mode
+                danceMode = SceneManager.GetActiveScene().name == "Dance";
 
                 if(backupCameraPositions == null)
                 {
