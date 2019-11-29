@@ -1,8 +1,10 @@
 # AI: The Somnium Files FPS Camera Mod
 
+See this video for a brief demonstration of the mod: https://www.youtube.com/watch?v=iR8HZhfthF0 (Please turn on Close Captions/Subtitles to see keys pressed).
+
 This mod adds the following features to the game:
 
-- A "Noclip Mode" FPS style camera allowing you to explore ADV mode scenes and Somniums. You freely rotate and translate the camera, and can move faster with `SHIFT` key to get around large levels (example: https://www.youtube.com/watch?v=6zuE3RdaCFU)
+- A "Noclip Mode" FPS style camera allowing you to explore ADV mode scenes and Somniums. You freely rotate and translate the camera, and can move faster with `SHIFT` key to get around large levels (see above video)
 - Screenshot helper features like:
   - the ability to entirely hide the game GUI (and the mod's shortcuts cheatsheet)
   - the ability to pause and resume the game, while still being able to move the camera freely
