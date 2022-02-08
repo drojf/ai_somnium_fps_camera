@@ -1,3 +1,23 @@
+# UPDATE: The community has created an updated version of the DLL which unlocks the in-game debug menu: 
+
+- https://twitter.com/robotortoise/status/1490276462481399812
+- https://www.reddit.com/r/aithesomniumfiles/comments/sltzx1/i_have_discovered_a_fully_functional_debug_mode/
+
+**Note that by the time you read this, things may have changed (features updated, they might have a github where the DLL is hosted etc.)**
+
+**Because it also includes this camera mod, you probably want to get that version of the DLL, rather than this one**
+
+**You can check it out on the Uchikoshi/AITS discord: http://discord.gg/XKMreYw (in the #ai-files-analysis channel - check the pinned message or ask around)**
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
 # AI: The Somnium Files FPS Camera Mod
 
 See this video for a brief demonstration of the mod: https://www.youtube.com/watch?v=iR8HZhfthF0 (Please turn on Close Captions/Subtitles to see keys pressed).
