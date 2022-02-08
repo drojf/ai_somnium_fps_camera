@@ -1,4 +1,4 @@
-# UPDATE: The community has created an updated version of the DLL which unlocks the in-game debug menu: 
+# UPDATE 2022-02-08: The community has created an updated version of the DLL which unlocks the in-game debug menu: 
 
 - https://twitter.com/robotortoise/status/1490276462481399812
 - https://www.reddit.com/r/aithesomniumfiles/comments/sltzx1/i_have_discovered_a_fully_functional_debug_mode/
