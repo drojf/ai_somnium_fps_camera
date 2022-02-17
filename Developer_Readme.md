@@ -1,47 +1,12 @@
 # Developer Readme
 
-## Reproduction Instructions
+## Please Read (17-02-2022)
 
-These instructions are for developers ONLY!
+Originally, I made this mod by directly editing the AI: Somnium Files DLL using DnSpy. However, the code has now been ported to [melonloader](https://github.com/LavaGang/MelonLoader) by @slavanomics. Please keep this in mind when reading this page, as I may not have properly updated all the information to reflect this. 
 
-BIG NOTE: After editing the file multiple times with DnSpy (mainly if you use "edit class"), the code may fail to compile. In this case, you should close all documents and re-open the original, unmodified `Assembly-CSharp.dll`. I'm not sure why this happens.
+I've taken out no-longer relevant information from this page - instead you can check the melonloader website for info on editing/maintaining a melonloader mod. However I've still left in notes which are still relevant on this page.
 
-- Download DnSpy and extract it somewhere
-- Navigate to the `AI The Somnium Files\AI_TheSomniumFiles_Data\Managed folder`
-- Open the `Assembly-CSharp.dll` with dnspy, **while it's in the same folder as all the other DLLs**. If it's not in the same folder as the other DLLS, dnspy won't be able to find them.
-- Expand the `Assembly-CSharp.dll` arrow
-- Expand the `Game` arrow
-- Navigate to the `RootNode` class
-- Right click the class and click "add class members"
-  - merge the code located in the `RootNode.fragment.cs` file of this github repository
-- **SAVE THE MODULE**. If you don't save the module, when you modify the next part it won't detect the changes
-- Navigate to the `InputProc` class
-- Right click the class and click "add class members"
-  - merge the code located in the `InputProc.fragment.cs` file of this github repository
-- Save the module (eg write the changes to the .dll). (You should enable "save extra metadata" or else the variable names will be lost in the saved DLLs?).
-
-ALWAYS remember to save the module (with the game closed?), otherwise your changes won't be seen. Also, check that steam is running, otherwise the game won't launch (will get stuck on a black screen).
-
-## Source Code
-
-The source code for the mod is located in [`InputProc.fragment.cs`](InputProc.fragment.cs). It's not a complete class - you need to merge it into the existing `InputProc` class using DnSpy.
-
-## Setting up debugging
-
-NOTE: sometimes the debug point may fail to be set - try restarting DnSpy and trying again
-NOTE2: if steam is not running, the game will fail to launch
-
-I just followed the instructions from https://github.com/0xd4d/dnSpy/wiki/Debugging-Unity-Games, but the below might be useful to you anyway.
-
-The current version of the game runs Unity 2017.4.17, 64-bit
-
-- Download Unity 2017.4.17, 64-bit from https://github.com/0xd4d/dnSpy/releases
-- Replace your existing one in the `AI The Somnium Files\AI_TheSomniumFiles_Data\Mono\EmbedRuntime` folder (keep a backup)
-- Click the green > button in dnspy
-- **In the dropdown, click "Unity game" option**. This setting resets when DnSpy is closed, so remember to set it.
-- I think you must launch the 64 bit version of DnSpy for debugging to work
-- Find the game .exe `AI_TheSomniumFiles.exe`
-- Start debugging
+Note that the users on the Uchikoshi/AITS discord: http://discord.gg/XKMreYw have much more knowledge about the workings of the engine than I do, so please head there unless it's something specific to this mod.
 
 ### Rendering
 
@@ -272,3 +237,10 @@ Boss's room example:
 - [93]    {Mask (Game.NonDrawingGraphic)}    UnityEngine.UI.Graphic {Game.NonDrawingGraphic}
 - [94]    {BaseImage (UnityEngine.UI.Image)}    UnityEngine.UI.Graphic {UnityEngine.UI.Image}
 - [95]    {EffectBase (UnityEngine.UI.Image)}    UnityEngine.UI.Graphic {UnityEngine.UI.Image}
+
+## TODO
+
+- ~~Add button to hide the UI (for taking screenshots) ... is there already a button for this in the game?~~
+- ~~Reduce near field clip of camera to allow being closer to objects without clipping~~ (https://forum.unity.com/threads/recommended-minimum-near-clipping-plane-of-cameras.348620/)
+- Allow selectively hiding AIBALL? need to run some tests to see if this will work as intended
+- Should this be added? Add momentum/smoothing to movement?
