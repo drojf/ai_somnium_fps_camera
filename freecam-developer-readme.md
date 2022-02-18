@@ -2,7 +2,7 @@
 
 ## Please Read (17-02-2022)
 
-Originally, I made this mod by directly editing the AI: Somnium Files DLL using DnSpy. However, the code has now been ported to [melonloader](https://github.com/LavaGang/MelonLoader) by @slavanomics. Please keep this in mind when reading this page, as I may not have properly updated all the information to reflect this. 
+Originally, I made this mod by directly editing the AI: Somnium Files DLL using DnSpy. However, the code has now been ported to [melonloader](https://github.com/LavaGang/MelonLoader) by [@slavanomics](https://github.com/slavanomics/SomniumDebugEnabler). Please keep this in mind when reading this page, as I may not have properly updated all the information to reflect this. 
 
 I've taken out no-longer relevant information from this page - instead you can check the melonloader website for info on editing/maintaining a melonloader mod. However I've still left in notes which are still relevant on this page.
 
@@ -133,7 +133,7 @@ The `EyeMove` and `EyeController` classes appear to be responsible for eye rotat
 ### GUI "Graphic" list
 
 There are multiple graphics named "image" - these seem to be used as render targets.
-One is used to render the main 3D display
+One is used to render the main 3D display.
 One might be used for the AIBall display.
 I wanted to selectively enable the AIBall display, but since it has the same name it's difficult to pick out.
 The "Mask" graphic may also have something to do with the AIBall display

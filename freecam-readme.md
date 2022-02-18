@@ -2,7 +2,7 @@
 
 See this video for a brief demonstration of the mod: https://www.youtube.com/watch?v=iR8HZhfthF0 (Please turn on Close Captions/Subtitles to see keys pressed).
 
-## Features
+## What does the mod do?
 
 This mod adds the following features to the game:
 
