@@ -1,3 +1,18 @@
+# UPDATE 2022-03-20: This mod is now hosted at https://github.com/slavanomics/SomniumDebugEnabler
+
+Please go to https://github.com/slavanomics/SomniumDebugEnabler for install instructions and downloads
+
+Please raise any bugs or requests on the new repository.
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
 # UPDATE 2022-02-08: The community has created an updated version of the DLL which unlocks the in-game debug menu: 
 
 - https://twitter.com/robotortoise/status/1490276462481399812
